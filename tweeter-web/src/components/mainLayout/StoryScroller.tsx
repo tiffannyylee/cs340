@@ -6,7 +6,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import { Link } from "react-router-dom";
 import Post from "../statusItem/Post";
 import useToastListener from "../toaster/ToastListenerHook";
-
+import StatusItem from "../statusItem/StatusItem"
 export const PAGE_SIZE = 10;
 
 const StoryScroller = () => {
@@ -126,7 +126,8 @@ const StoryScroller = () => {
             key={index}
             className="row mb-3 mx-0 px-0 border rounded bg-white"
           >
-            <div className="col bg-light mx-0 px-0">
+            
+            {/* <div className="col bg-light mx-0 px-0">
               <div className="container px-0">
                 <div className="row mx-0 px-0">
                   <div className="col-auto p-3">
@@ -156,7 +157,8 @@ const StoryScroller = () => {
                   </div>
                 </div>
               </div>
-            </div>
+            </div> */}
+            <StatusItem user={item.user} status = {item} />
           </div>
         ))}
       </InfiniteScroll>
