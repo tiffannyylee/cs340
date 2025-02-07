@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import AuthenticationFormLayout from "../AuthenticationFormLayout";
 import { AuthToken, FakeData, User } from "tweeter-shared";
 import useToastListener from "../../toaster/ToastListenerHook";
+import AuthentificationFields from "../AuthenticationFields";
 
 interface Props {
   originalUrl?: string;
@@ -71,7 +72,7 @@ const Login = (props: Props) => {
   const inputFieldGenerator = () => {
     return (
       <>
-        <div className="form-floating">
+        {/* <div className="form-floating">
           <input
             type="text"
             className="form-control"
@@ -93,7 +94,11 @@ const Login = (props: Props) => {
             onChange={(event) => setPassword(event.target.value)}
           />
           <label htmlFor="passwordInput">Password</label>
-        </div>
+        </div> */}
+        <AuthentificationFields onKeyDownHandler={loginOnEnter} alias={alias}
+        setAlias={setAlias}
+        password={password}
+        setPassword={setPassword} />
       </>
     );
   };
