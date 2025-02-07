@@ -40,7 +40,13 @@ const AuthenticationFormLayout = (props: Props) => {
 
             <h1 className="h4 mb-3 fw-normal">Or</h1>
             <h1 className="h5 mb-3 fw-normal">{props.oAuthHeading}</h1>
-
+            <div className="text-center mb-3">
+              <Oauth companyNameCap = "Google" companyNameLower="google" companyTooltipId="googleTooltip" />
+              <Oauth companyNameCap = "Facebook" companyNameLower="facebook" companyTooltipId="facebookTooltip" />
+              <Oauth companyNameCap = "Twitter" companyNameLower="twitter" companyTooltipId="twitterTooltip" />
+              <Oauth companyNameCap = "Github" companyNameLower="github" companyTooltipId="githubTooltip" />
+            </div>
+            
             {/* <div className="text-center mb-3">
               <button
                 type="button"
@@ -127,7 +133,7 @@ const AuthenticationFormLayout = (props: Props) => {
                 </OverlayTrigger>
               </button>
             </div> */}
-            <Oauth />
+            {/* <Oauth /> */}
 
             <div className="checkbox mb-3">
               <label>

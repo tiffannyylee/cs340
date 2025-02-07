@@ -1,8 +1,15 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { IconName } from "@fortawesome/fontawesome-svg-core";
 import { OverlayTrigger, Tooltip } from "react-bootstrap"
 import useToastListener from "../toaster/ToastListenerHook";
 
-const Oauth = () => {
+interface Props {
+  companyNameCap:string
+  companyTooltipId:string
+  companyNameLower:string
+}
+
+const Oauth = (props:Props) => {
     const { displayInfoMessage } = useToastListener();
     
     const displayInfoMessageWithDarkBackground = (message: string): void => {
@@ -10,25 +17,25 @@ const Oauth = () => {
       };
 
     return (
-        <div className="text-center mb-3">
+      <>
         <button
           type="button"
           className="btn btn-link btn-floating mx-1"
           onClick={() =>
             displayInfoMessageWithDarkBackground(
-              "Google registration is not implemented."
+              `${props.companyNameCap} registration is not implemented.`
             )
           }
         >
           <OverlayTrigger
             placement="top"
-            overlay={<Tooltip id="googleTooltip">Google</Tooltip>}
+            overlay={<Tooltip id={props.companyTooltipId}>{props.companyNameCap}</Tooltip>}
           >
-            <FontAwesomeIcon icon={["fab", "google"]} />
+            <FontAwesomeIcon icon={["fab", props.companyNameLower as IconName]} />
           </OverlayTrigger>
         </button>
-
-        <button
+        
+        {/* <button
           type="button"
           className="btn btn-link btn-floating mx-1"
           onClick={() =>
@@ -94,8 +101,8 @@ const Oauth = () => {
           >
             <FontAwesomeIcon icon={["fab", "github"]} />
           </OverlayTrigger>
-        </button>
-      </div>
+        </button> */}
+      </>
     )
 }
 
