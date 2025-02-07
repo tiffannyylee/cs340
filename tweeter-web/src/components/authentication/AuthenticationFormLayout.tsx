@@ -1,6 +1,7 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { OverlayTrigger, Tooltip } from "react-bootstrap";
 import useToastListener from "../toaster/ToastListenerHook";
+import Oauth from "./Oauth";
 
 interface Props {
   headingText: string;
@@ -40,7 +41,7 @@ const AuthenticationFormLayout = (props: Props) => {
             <h1 className="h4 mb-3 fw-normal">Or</h1>
             <h1 className="h5 mb-3 fw-normal">{props.oAuthHeading}</h1>
 
-            <div className="text-center mb-3">
+            {/* <div className="text-center mb-3">
               <button
                 type="button"
                 className="btn btn-link btn-floating mx-1"
@@ -125,7 +126,8 @@ const AuthenticationFormLayout = (props: Props) => {
                   <FontAwesomeIcon icon={["fab", "github"]} />
                 </OverlayTrigger>
               </button>
-            </div>
+            </div> */}
+            <Oauth />
 
             <div className="checkbox mb-3">
               <label>
