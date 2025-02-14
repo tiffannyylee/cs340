@@ -17,6 +17,9 @@ import useUserInfo from "./components/userInfo/UserInfoHook";
 import { FolloweePresenter} from "./presenters/FolloweePresenter";
 import { UserItemView } from "./presenters/UserItemPresenter";
 import { FollowerPresenter } from "./presenters/FollowerPresenter";
+import { StatusItemPresenter, StatusItemView } from "./presenters/StatusItemPresenter";
+import { FeedPresenter } from "./presenters/FeedPresenter";
+import { StoryPresenter } from "./presenters/StoryPresenter";
 
 const App = () => {
   const { currentUser, authToken } = useUserInfo();
@@ -40,25 +43,6 @@ const App = () => {
 };
 
 const AuthenticatedRoutes = () => {
-  const loadMoreFeedItems = async (
-    authToken: AuthToken,
-    userAlias: string,
-    pageSize: number,
-    lastItem: Status | null
-  ): Promise<[Status[], boolean]> => {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
-  };
-  const loadMoreStoryItems = async(
-    authToken: AuthToken,
-    userAlias: string,
-    pageSize: number,
-    lastItem: Status | null
-  ): Promise<[Status[], boolean]> => {
-    // TODO: Replace with the result of calling server
-    return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
-  };
-
 
   return (
     <Routes>
@@ -66,8 +50,17 @@ const AuthenticatedRoutes = () => {
         <Route index element={<Navigate to="/feed" />} />
         {/* <Route path="feed" element={<FeedScroller />} />
         <Route path="story" element={<StoryScroller />} /> */}
-        <Route path="feed" element={<StatusItemScroller key = {1} statusDescription="feed" loadMoreStatusItems={loadMoreFeedItems} />} />
-        <Route path="story" element={<StatusItemScroller key = {2} statusDescription="story" loadMoreStatusItems={loadMoreStoryItems} />} />
+        <Route 
+          path="feed" 
+          element={
+            <StatusItemScroller
+              key = {1} 
+              presenterGenerator={(view:StatusItemView)=> new FeedPresenter(view)}
+              />
+            } 
+          />
+        <Route path="story" element={<StatusItemScroller key = {2} presenterGenerator={(view:StatusItemView)=> new StoryPresenter(view)}
+ />} />
         <Route
           path="followees"
           element={

@@ -6,8 +6,6 @@ export const PAGE_SIZE = 10;
 export class FolloweePresenter extends UserItemPresenter {
     private followService: FollowService;
 
-
-
     public constructor (view: UserItemView) {
         super(view)
         this.followService = new FollowService()
