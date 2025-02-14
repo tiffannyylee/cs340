@@ -24,14 +24,25 @@ const Login = (props: Props) => {
   const { updateUserInfo } = useUserInfo();
   const { displayErrorMessage } = useToastListener();
 
-  const checkSubmitButtonStatus = (): boolean => {
-    return !alias || !password;
-  };
+  const listener : UserAuthView = {
+    displayErrorMessage: displayErrorMessage,
+    updateUserInfo: updateUserInfo, 
+    navigateTo: navigate
+  }
+
+  const presenter = props.presenterGenerator(listener)
+
+  // const checkSubmitButtonStatus = (): boolean => {
+  //   return !alias || !password;
+  // };
   //presenter.checkSubmitButtonStatus();
 
   const loginOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key == "Enter" && !checkSubmitButtonStatus()) {
-      doLogin();
+    // if (event.key == "Enter" && !checkSubmitButtonStatus()) {
+    //   doLogin();
+    // }
+    if (event.key == "Enter" && !presenter.checkSubmitButtonStatus(alias,password)) {
+      presenter.doLogin(alias,password,rememberMe,props.originalUrl!);
     }
   };
 
@@ -57,13 +68,7 @@ const Login = (props: Props) => {
     //   setIsLoading(false);
     // }
   };
-  const listener : UserAuthView = {
-    displayErrorMessage: displayErrorMessage,
-    updateUserInfo: updateUserInfo, 
-    navigateTo: navigate
-  }
 
-  const presenter = props.presenterGenerator(listener)
 
   const login = async (
     alias: string,
@@ -106,9 +111,9 @@ const Login = (props: Props) => {
       inputFieldGenerator={inputFieldGenerator}
       switchAuthenticationMethodGenerator={switchAuthenticationMethodGenerator}
       setRememberMe={setRememberMe}
-      submitButtonDisabled={checkSubmitButtonStatus}
+      submitButtonDisabled={()=>presenter.checkSubmitButtonStatus(alias,password)}
       isLoading={isLoading}
-      submit={doLogin}
+      submit={()=>presenter.doLogin(alias,password,rememberMe,props.originalUrl!)}
     />
   );
 };
