@@ -10,7 +10,6 @@ import Login from "./components/authentication/login/Login";
 import Register from "./components/authentication/register/Register";
 import MainLayout from "./components/mainLayout/MainLayout";
 import Toaster from "./components/toaster/Toaster";
-import { AuthToken, User, FakeData, Status } from "tweeter-shared";
 import UserItemScroller from "./components/mainLayout/UserItemScroller";
 import StatusItemScroller from "./components/mainLayout/StatusItemScroller";
 import useUserInfo from "./components/userInfo/UserInfoHook";
@@ -20,6 +19,8 @@ import { FollowerPresenter } from "./presenters/FollowerPresenter";
 import { StatusItemPresenter, StatusItemView } from "./presenters/StatusItemPresenter";
 import { FeedPresenter } from "./presenters/FeedPresenter";
 import { StoryPresenter } from "./presenters/StoryPresenter";
+import { UserAuthPresenter, UserAuthView } from "./presenters/UserAuthPresenter";
+import { LoginPresenter } from "./presenters/LoginPresenter";
 
 const App = () => {
   const { currentUser, authToken } = useUserInfo();
@@ -91,9 +92,9 @@ const UnauthenticatedRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route path="/login" element={<Login presenterGenerator={(view: UserAuthView)=> new LoginPresenter(view)}/>} />
       <Route path="/register" element={<Register />} />
-      <Route path="*" element={<Login originalUrl={location.pathname} />} />
+      <Route path="*" element={<Login originalUrl={location.pathname} presenterGenerator={(view: UserAuthView)=> new LoginPresenter(view)}/>} />
     </Routes>
   );
 };

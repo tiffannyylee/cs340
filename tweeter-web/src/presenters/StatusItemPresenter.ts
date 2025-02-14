@@ -3,6 +3,7 @@ import { AuthToken, Status } from "tweeter-shared";
 export interface StatusItemView {
     addItems:(newItems: Status []) => void
     displayErrorMessage: (message: string) => void
+    //functions from the component that the view will call on the presenter
 }
 export abstract class StatusItemPresenter {
     private _hasMoreItems = true;

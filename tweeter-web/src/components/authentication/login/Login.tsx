@@ -7,9 +7,11 @@ import { AuthToken, FakeData, User } from "tweeter-shared";
 import useToastListener from "../../toaster/ToastListenerHook";
 import AuthentificationFields from "../AuthenticationFields";
 import useUserInfo from "../../userInfo/UserInfoHook";
+import { UserAuthPresenter, UserAuthView } from "../../../presenters/UserAuthPresenter";
 
 interface Props {
   originalUrl?: string;
+  presenterGenerator : (view: UserAuthView) => UserAuthPresenter
 }
 
 const Login = (props: Props) => {
@@ -25,6 +27,7 @@ const Login = (props: Props) => {
   const checkSubmitButtonStatus = (): boolean => {
     return !alias || !password;
   };
+  //presenter.checkSubmitButtonStatus();
 
   const loginOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.key == "Enter" && !checkSubmitButtonStatus()) {
@@ -33,26 +36,34 @@ const Login = (props: Props) => {
   };
 
   const doLogin = async () => {
-    try {
-      setIsLoading(true);
+    presenter.doLogin(alias,password,rememberMe,props.originalUrl!)
+    // try {
+    //   setIsLoading(true);
 
-      const [user, authToken] = await login(alias, password);
+    //   const [user, authToken] = await login(alias, password);
 
-      updateUserInfo(user, user, authToken, rememberMe);
+    //   updateUserInfo(user, user, authToken, rememberMe);
 
-      if (!!props.originalUrl) {
-        navigate(props.originalUrl);
-      } else {
-        navigate("/");
-      }
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to log user in because of exception: ${error}`
-      );
-    } finally {
-      setIsLoading(false);
-    }
+    //   if (!!props.originalUrl) {
+    //     navigate(props.originalUrl);
+    //   } else {
+    //     navigate("/");
+    //   }
+    // } catch (error) {
+    //   displayErrorMessage(
+    //     `Failed to log user in because of exception: ${error}`
+    //   );
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
+  const listener : UserAuthView = {
+    displayErrorMessage: displayErrorMessage,
+    updateUserInfo: updateUserInfo, 
+    navigateTo: navigate
+  }
+
+  const presenter = props.presenterGenerator(listener)
 
   const login = async (
     alias: string,
