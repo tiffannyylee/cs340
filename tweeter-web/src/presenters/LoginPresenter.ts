@@ -1,6 +1,5 @@
 import { UserService } from "../model/UserService";
 import { UserAuthPresenter, UserAuthView } from "./UserAuthPresenter";
-import { UserItemView } from "./UserItemPresenter";
 
 export class LoginPresenter extends UserAuthPresenter {
     private userService: UserService;

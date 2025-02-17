@@ -1,6 +1,8 @@
 import { AuthToken, FakeData, User } from "tweeter-shared";
 import { Link } from "react-router-dom";
 import useUserNavHook from "./UserNavigationHook";
+import { UserNavParentView, UserNavParentPresenter } from "../../presenters/UserNavParentPresenter";
+import { UserNavigationPresenter } from "../../presenters/UserNavigationPresenter";
 
 interface Props {
   value: User;
@@ -43,7 +45,8 @@ const UserItem = (props: Props) => {
   //   // TODO: Replace with the result of calling server
   //   return FakeData.instance.findUserByAlias(alias);
   // };
-  const { navigateToUser } = useUserNavHook();
+  const presenterGenerator = (view: UserNavParentView) => new UserNavigationPresenter(view);
+  const { navigateToUser } = useUserNavHook({presenterGenerator});
 
   return (
     <div className="col bg-light mx-0 px-0">
