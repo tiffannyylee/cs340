@@ -7,6 +7,7 @@ export class UserNavigationPresenter extends UserNavParentPresenter{
     public constructor(view:UserNavParentView){
         super(view)
         this.userService = new UserService()
+        this.navigateToUser = this.navigateToUser.bind(this);
     }
     public extractAlias(value: string): string {
         const index = value.indexOf("@");
