@@ -46,8 +46,8 @@ const Login = (props: Props) => {
     }
   };
 
-  const doLogin = async () => {
-    presenter.doLogin(alias,password,rememberMe,props.originalUrl!)
+  // const doLogin = async () => {
+  //   presenter.doLogin(alias,password,rememberMe,props.originalUrl!)
     // try {
     //   setIsLoading(true);
 
@@ -67,22 +67,22 @@ const Login = (props: Props) => {
     // } finally {
     //   setIsLoading(false);
     // }
-  };
+  //};
 
 
-  const login = async (
-    alias: string,
-    password: string
-  ): Promise<[User, AuthToken]> => {
-    // TODO: Replace with the result of calling the server
-    const user = FakeData.instance.firstUser;
+  // const login = async (
+  //   alias: string,
+  //   password: string
+  // ): Promise<[User, AuthToken]> => {
+  //   // TODO: Replace with the result of calling the server
+  //   const user = FakeData.instance.firstUser;
 
-    if (user === null) {
-      throw new Error("Invalid alias or password");
-    }
+  //   if (user === null) {
+  //     throw new Error("Invalid alias or password");
+  //   }
 
-    return [user, FakeData.instance.authToken];
-  };
+  //   return [user, FakeData.instance.authToken];
+  // };
 
   const inputFieldGenerator = () => {
     return (
