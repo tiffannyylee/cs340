@@ -8,8 +8,13 @@ import { Buffer } from "buffer";
 import useToastListener from "../../toaster/ToastListenerHook";
 import AuthentificationFields from "../AuthenticationFields";
 import useUserInfo from "../../userInfo/UserInfoHook";
+import { RegisterParentPresenter, RegisterParentView } from "../../../presenters/RegisterParentPresenter";
 
-const Register = () => {
+interface Props {
+  presenterGenerator : (view: RegisterParentView) => RegisterParentPresenter
+}
+
+const Register = (props:Props) => {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [alias, setAlias] = useState("");
@@ -24,20 +29,28 @@ const Register = () => {
   const { updateUserInfo } = useUserInfo();
   const { displayErrorMessage } = useToastListener();
 
-  const checkSubmitButtonStatus = (): boolean => {
-    return (
-      !firstName ||
-      !lastName ||
-      !alias ||
-      !password ||
-      !imageUrl ||
-      !imageFileExtension
-    );
-  };
+  const listener : RegisterParentView = {
+    displayErrorMessage: displayErrorMessage,
+    updateUserInfo: updateUserInfo, 
+    navigateTo: navigate
+  }
+
+  const presenter = props.presenterGenerator(listener)
+
+  // const checkSubmitButtonStatus = (): boolean => {
+  //   return (
+  //     !firstName ||
+  //     !lastName ||
+  //     !alias ||
+  //     !password ||
+  //     !imageUrl ||
+  //     !imageFileExtension
+  //   );
+  // };
 
   const registerOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
-    if (event.key == "Enter" && !checkSubmitButtonStatus()) {
-      doRegister();
+    if (event.key == "Enter" && !presenter.checkSubmitButtonStatus(firstName,lastName,alias,password,imageUrl,imageFileExtension)) {
+      presenter.doRegister(firstName,lastName,alias,password,imageBytes,imageFileExtension,rememberMe);
     }
   };
 
@@ -68,7 +81,7 @@ const Register = () => {
       reader.readAsDataURL(file);
 
       // Set image file extension (and move to a separate method)
-      const fileExtension = getFileExtension(file);
+      const fileExtension = presenter.getFileExtension(file);
       if (fileExtension) {
         setImageFileExtension(fileExtension);
       }
@@ -78,55 +91,55 @@ const Register = () => {
     }
   };
 
-  const getFileExtension = (file: File): string | undefined => {
-    return file.name.split(".").pop();
-  };
+  // const getFileExtension = (file: File): string | undefined => {
+  //   return file.name.split(".").pop();
+  // };
 
-  const doRegister = async () => {
-    try {
-      setIsLoading(true);
+  // const doRegister = async () => {
+  //   try {
+  //     setIsLoading(true);
 
-      const [user, authToken] = await register(
-        firstName,
-        lastName,
-        alias,
-        password,
-        imageBytes,
-        imageFileExtension
-      );
+  //     const [user, authToken] = await register(
+  //       firstName,
+  //       lastName,
+  //       alias,
+  //       password,
+  //       imageBytes,
+  //       imageFileExtension
+  //     );
 
-      updateUserInfo(user, user, authToken, rememberMe);
-      navigate("/");
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to register user because of exception: ${error}`
-      );
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  //     updateUserInfo(user, user, authToken, rememberMe);
+  //     navigate("/");
+  //   } catch (error) {
+  //     displayErrorMessage(
+  //       `Failed to register user because of exception: ${error}`
+  //     );
+  //   } finally {
+  //     setIsLoading(false);
+  //   }
+  // };
 
-  const register = async (
-    firstName: string,
-    lastName: string,
-    alias: string,
-    password: string,
-    userImageBytes: Uint8Array,
-    imageFileExtension: string
-  ): Promise<[User, AuthToken]> => {
-    // Not neded now, but will be needed when you make the request to the server in milestone 3
-    const imageStringBase64: string =
-      Buffer.from(userImageBytes).toString("base64");
+  // const register = async (
+  //   firstName: string,
+  //   lastName: string,
+  //   alias: string,
+  //   password: string,
+  //   userImageBytes: Uint8Array,
+  //   imageFileExtension: string
+  // ): Promise<[User, AuthToken]> => {
+  //   // Not neded now, but will be needed when you make the request to the server in milestone 3
+  //   const imageStringBase64: string =
+  //     Buffer.from(userImageBytes).toString("base64");
 
-    // TODO: Replace with the result of calling the server
-    const user = FakeData.instance.firstUser;
+  //   // TODO: Replace with the result of calling the server
+  //   const user = FakeData.instance.firstUser;
 
-    if (user === null) {
-      throw new Error("Invalid registration");
-    }
+  //   if (user === null) {
+  //     throw new Error("Invalid registration");
+  //   }
 
-    return [user, FakeData.instance.authToken];
-  };
+  //   return [user, FakeData.instance.authToken];
+  // };
 
   const inputFieldGenerator = () => {
     return (
@@ -190,9 +203,9 @@ const Register = () => {
       inputFieldGenerator={inputFieldGenerator}
       switchAuthenticationMethodGenerator={switchAuthenticationMethodGenerator}
       setRememberMe={setRememberMe}
-      submitButtonDisabled={checkSubmitButtonStatus}
+      submitButtonDisabled={()=>presenter.checkSubmitButtonStatus(firstName,lastName,alias,password,imageUrl,imageFileExtension)}
       isLoading={isLoading}
-      submit={doRegister}
+      submit={()=>presenter.doRegister(firstName,lastName,alias,password,imageBytes,imageFileExtension,rememberMe)}
     />
   );
 };
