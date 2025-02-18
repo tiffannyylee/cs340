@@ -3,6 +3,8 @@ import { Outlet } from "react-router-dom";
 import AppNavbar from "../appNavbar/AppNavbar";
 import PostStatus from "../postStatus/PostStatus";
 import UserInfo from "../userInfo/UserInfo";
+import { PostStatusView } from "../../presenters/PostStatusParentPresenter";
+import { PostStatusPresenter } from "../../presenters/PostStatusPresenter";
 
 const MainLayout = () => {
   return (
@@ -16,7 +18,8 @@ const MainLayout = () => {
                 <UserInfo />
               </div>
               <div className="p-3 border mt-1 rounded bg-light">
-                <PostStatus />
+                {/* <PostStatus /> */}
+                <PostStatus presenterGenerator={(view: PostStatusView)=> new PostStatusPresenter(view)}/>
               </div>
             </div>
           </div>

@@ -3,8 +3,12 @@ import { useState } from "react";
 import { AuthToken, Status } from "tweeter-shared";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserInfo from "../userInfo/UserInfoHook";
+import { PostStatusParentPresenter, PostStatusView } from "../../presenters/PostStatusParentPresenter";
+interface Props {
+  presenterGenerator : (view: PostStatusView) => PostStatusParentPresenter
+}
 
-const PostStatus = () => {
+const PostStatus = (props:Props) => {
   const { displayErrorMessage, displayInfoMessage, clearLastInfoMessage } =
     useToastListener();
 
@@ -12,27 +16,37 @@ const PostStatus = () => {
   const [post, setPost] = useState("");
   const [isLoading, setIsLoading] = useState(false);
 
+  const listener : PostStatusView = {
+    displayInfoMessage: displayInfoMessage,
+    displayErrorMessage: displayErrorMessage,
+    clearLastInfoMessage: clearLastInfoMessage,
+    updatePost: setPost,
+  }
+
+  const presenter = props.presenterGenerator(listener)
+
   const submitPost = async (event: React.MouseEvent) => {
     event.preventDefault();
 
-    try {
-      setIsLoading(true);
-      displayInfoMessage("Posting status...", 0);
+    // try {
+    //   setIsLoading(true);
+    //   displayInfoMessage("Posting status...", 0);
 
-      const status = new Status(post, currentUser!, Date.now());
+    //   const status = new Status(post, currentUser!, Date.now());
 
-      await postStatus(authToken!, status);
+    //   await postStatus(authToken!, status);
 
-      setPost("");
-      displayInfoMessage("Status posted!", 2000);
-    } catch (error) {
-      displayErrorMessage(
-        `Failed to post the status because of exception: ${error}`
-      );
-    } finally {
-      clearLastInfoMessage();
-      setIsLoading(false);
-    }
+    //   setPost("");
+    //   displayInfoMessage("Status posted!", 2000);
+    // } catch (error) {
+    //   displayErrorMessage(
+    //     `Failed to post the status because of exception: ${error}`
+    //   );
+    // } finally {
+    //   clearLastInfoMessage();
+    //   setIsLoading(false);
+    // }
+    presenter.submitPost(authToken!,currentUser!,post)
   };
 
   const postStatus = async (
