@@ -31,57 +31,11 @@ const Login = (props: Props) => {
 
   const presenter = props.presenterGenerator(listener)
 
-  // const checkSubmitButtonStatus = (): boolean => {
-  //   return !alias || !password;
-  // };
-  //presenter.checkSubmitButtonStatus();
-
   const loginOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
-    // if (event.key == "Enter" && !checkSubmitButtonStatus()) {
-    //   doLogin();
-    // }
     if (event.key == "Enter" && !presenter.checkSubmitButtonStatus(alias,password)) {
       presenter.doLogin(alias,password,rememberMe,props.originalUrl!);
     }
   };
-
-  // const doLogin = async () => {
-  //   presenter.doLogin(alias,password,rememberMe,props.originalUrl!)
-    // try {
-    //   setIsLoading(true);
-
-    //   const [user, authToken] = await login(alias, password);
-
-    //   updateUserInfo(user, user, authToken, rememberMe);
-
-    //   if (!!props.originalUrl) {
-    //     navigate(props.originalUrl);
-    //   } else {
-    //     navigate("/");
-    //   }
-    // } catch (error) {
-    //   displayErrorMessage(
-    //     `Failed to log user in because of exception: ${error}`
-    //   );
-    // } finally {
-    //   setIsLoading(false);
-    // }
-  //};
-
-
-  // const login = async (
-  //   alias: string,
-  //   password: string
-  // ): Promise<[User, AuthToken]> => {
-  //   // TODO: Replace with the result of calling the server
-  //   const user = FakeData.instance.firstUser;
-
-  //   if (user === null) {
-  //     throw new Error("Invalid alias or password");
-  //   }
-
-  //   return [user, FakeData.instance.authToken];
-  // };
 
   const inputFieldGenerator = () => {
     return (
