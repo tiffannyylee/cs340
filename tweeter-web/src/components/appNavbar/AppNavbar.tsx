@@ -5,12 +5,26 @@ import Image from "react-bootstrap/Image";
 import { AuthToken } from "tweeter-shared";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserInfo from "../userInfo/UserInfoHook";
+import { AppNavbarView, AppNavbarParentPresenter } from "../../presenters/AppNavbarParentPresenter";
 
-const AppNavbar = () => {
+interface Props {
+  presenterGenerator : (view: AppNavbarView) => AppNavbarParentPresenter
+}
+
+const AppNavbar = (props: Props) => {
   const location = useLocation();
   const { authToken, clearUserInfo } = useUserInfo();
   const { displayInfoMessage, displayErrorMessage, clearLastInfoMessage } =
     useToastListener();
+
+  const listener : AppNavbarView = {
+    displayErrorMessage: displayErrorMessage,
+    displayInfoMessage: displayInfoMessage,
+    clearLastInfoMessage: clearLastInfoMessage,
+    clearUserInfo: clearUserInfo
+  }
+
+  const presenter = props.presenterGenerator(listener)
 
   const logOut = async () => {
     displayInfoMessage("Logging Out...", 0);
@@ -71,7 +85,7 @@ const AppNavbar = () => {
               <NavLink to="/followers">Followers</NavLink>
             </Nav.Item>
             <Nav.Item>
-              <NavLink id="logout" onClick={logOut} to={location.pathname}>
+              <NavLink id="logout" onClick={()=>presenter.logOut(authToken!)} to={location.pathname}>
                 Logout
               </NavLink>
             </Nav.Item>

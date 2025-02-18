@@ -7,11 +7,13 @@ import { PostStatusView } from "../../presenters/PostStatusParentPresenter";
 import { PostStatusPresenter } from "../../presenters/PostStatusPresenter";
 import { UserInfoView } from "../../presenters/UserInfoParentPresenter";
 import { UserInfoPresenter } from "../../presenters/UserInfoPresenter";
+import { AppNavbarView } from "../../presenters/AppNavbarParentPresenter";
+import { AppNavbarPresenter } from "../../presenters/AppNavbarPresenter";
 
 const MainLayout = () => {
   return (
     <>
-      <AppNavbar />
+      <AppNavbar presenterGenerator={(view: AppNavbarView)=> new AppNavbarPresenter(view)}/>
       <div className="container mx-auto px-3 w-100">
         <div className="row gx-4">
           <div className="col-4">
