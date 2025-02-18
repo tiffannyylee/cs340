@@ -27,8 +27,8 @@ export class PostStatusPresenter extends PostStatusParentPresenter{
         `Failed to post the status because of exception: ${error}`
       );
     } finally {
-      this.view.clearLastInfoMessage();
       this.isLoading=false;
+      this.view.clearLastInfoMessage();
         // this.isLoading = false; // Ensure loading state is updated first
         // setTimeout(() => this.view.clearLastInfoMessage(), 100); // Slight delay before clearing message
     }
