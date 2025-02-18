@@ -11,7 +11,6 @@ export class PostStatusPresenter extends PostStatusParentPresenter{
     }
 
   public async submitPost(authToken:AuthToken, currentUser:User, post:string) {
-
     try {
       this.isLoading=true;
       this.view.displayInfoMessage("Posting status...", 0);
@@ -32,5 +31,8 @@ export class PostStatusPresenter extends PostStatusParentPresenter{
         // this.isLoading = false; // Ensure loading state is updated first
         // setTimeout(() => this.view.clearLastInfoMessage(), 100); // Slight delay before clearing message
     }
+  };
+  public checkButtonStatus(post:string,authToken:AuthToken,currentUser:User):boolean {
+    return !post.trim() || !authToken || !currentUser;
   };
 }

@@ -1,6 +1,7 @@
 import { UserService } from "../model/UserService";
 import { UserAuthPresenter, UserAuthView } from "./UserAuthPresenter";
 
+
 export class LoginPresenter extends UserAuthPresenter {
     private userService: UserService;
     public constructor(view: UserAuthView){

@@ -31,4 +31,5 @@ export abstract class PostStatusParentPresenter{
         this._post = value
     }
     public abstract submitPost(authToken:AuthToken, currentUser:User, post:string):void;
+    public abstract checkButtonStatus(post:string,authToken:AuthToken,currentUser:User):boolean|undefined;
 }
