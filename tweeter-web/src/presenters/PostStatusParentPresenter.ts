@@ -1,22 +1,16 @@
 import { AuthToken, User } from "tweeter-shared"
+import { View, Presenter, MessageView } from "./Presenter";
 
-export interface PostStatusView {
-    displayInfoMessage: (message: string, duration: number, bootstrapClasses?: string | undefined) => void
-    displayErrorMessage: (message: string) => void
-    clearLastInfoMessage: () => void
+export interface PostStatusView extends MessageView {
     updatePost: (newPost: string) => void;
 }
-export abstract class PostStatusParentPresenter{
-    private _view: PostStatusView
+export abstract class PostStatusParentPresenter extends Presenter {
     protected _isLoading: boolean
     protected _post: string
     protected constructor(view:PostStatusView){
-        this._view = view
+        super(view)
         this._isLoading = false
         this._post = ""
-    }
-    protected get view() {
-        return this._view
     }
     protected get isLoading(){
         return this._isLoading

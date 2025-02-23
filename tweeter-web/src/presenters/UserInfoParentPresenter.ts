@@ -1,26 +1,20 @@
 import { AuthToken, User } from "tweeter-shared"
+import { View, Presenter } from "./Presenter"
 
-export interface UserInfoView {
-    displayInfoMessage: (message: string, duration: number, bootstrapClasses?: string | undefined) => void
-    displayErrorMessage: (message: string) => void
-    clearLastInfoMessage: () => void
+export interface UserInfoView extends View {
 
 }
-export abstract class UserInfoParentPresenter {
-    private _view:UserInfoView
+export abstract class UserInfoParentPresenter extends Presenter {
     protected _isLoading: boolean
     protected _isFollower: boolean
     protected _followeeCount: number
     protected _followerCount: number
     protected constructor(view:UserInfoView){
-        this._view = view
+        super(view)
         this._isLoading = false
         this._isFollower = false
         this._followeeCount = -1
         this._followerCount = -1
-    }
-    protected get view() {
-        return this._view
     }
     protected get isLoading(){
         return this._isLoading

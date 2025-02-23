@@ -1,22 +1,16 @@
 import { AuthToken, Status } from "tweeter-shared";
+import { Presenter, View } from "./Presenter";
 
-export interface StatusItemView {
+export interface StatusItemView extends View{
     addItems:(newItems: Status []) => void
-    displayErrorMessage: (message: string) => void
     //functions from the component that the view will call on the presenter
 }
-export abstract class StatusItemPresenter {
+export abstract class StatusItemPresenter extends Presenter{
     private _hasMoreItems = true;
     private _lastItem : Status | null= null;
     
-    private _view: StatusItemView
-
     protected constructor(view: StatusItemView) {
-        this._view = view
-    }
-
-    protected get view() {
-        return this._view
+        super(view)
     }
 
     public get hasMoreItems() {
