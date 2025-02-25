@@ -5,19 +5,12 @@ export interface PostStatusView extends MessageView {
     updatePost: (newPost: string) => void;
 }
 export abstract class PostStatusParentPresenter extends Presenter {
-    protected _isLoading: boolean
     protected _post: string
     protected constructor(view:PostStatusView){
         super(view)
-        this._isLoading = false
         this._post = ""
     }
-    protected get isLoading(){
-        return this._isLoading
-    }
-    protected set isLoading(value:boolean){
-        this._isLoading = value
-    }
+
     protected get post(){
         return this._post
     }

@@ -5,22 +5,14 @@ export interface UserInfoView extends MessageView {
 
 }
 export abstract class UserInfoParentPresenter extends Presenter {
-    protected _isLoading: boolean
     protected _isFollower: boolean
     protected _followeeCount: number
     protected _followerCount: number
     protected constructor(view:UserInfoView){
         super(view)
-        this._isLoading = false
         this._isFollower = false
         this._followeeCount = -1
         this._followerCount = -1
-    }
-    protected get isLoading(){
-        return this._isLoading
-    }
-    protected set isLoading(value:boolean){
-        this._isLoading = value
     }
     protected get isFollower(){
         return this._isFollower

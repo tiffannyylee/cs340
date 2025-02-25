@@ -1,7 +1,6 @@
 import { AuthToken, Status, User } from "tweeter-shared";
 import { StatusService } from "../model/StatusService";
 import { PostStatusParentPresenter, PostStatusView } from "./PostStatusParentPresenter";
-import Post from "../components/statusItem/Post";
 
 export class PostStatusPresenter extends PostStatusParentPresenter{
     private statusService: StatusService;
@@ -31,8 +30,6 @@ export class PostStatusPresenter extends PostStatusParentPresenter{
     } finally {
       this.isLoading=false;
       this.view.clearLastInfoMessage();
-        // this.isLoading = false; // Ensure loading state is updated first
-        // setTimeout(() => this.view.clearLastInfoMessage(), 100); // Slight delay before clearing message
     }
   };
   public checkButtonStatus(post:string,authToken:AuthToken,currentUser:User):boolean {

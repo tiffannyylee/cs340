@@ -8,19 +8,10 @@ export interface UserAuthView extends View {
 }
 export abstract class UserAuthPresenter extends Presenter {
     private _userService: UserService;
-
-    private _isLoading = false;
-
     protected constructor(view: UserAuthView) {
         super(view)
         this._userService=new UserService()
 
-    }
-    protected get isLoading() {
-        return this._isLoading
-    }
-    protected set isLoading(value:boolean) {
-        this._isLoading = value;
     }
     protected get service() {
         return this._userService

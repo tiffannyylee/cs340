@@ -14,19 +14,4 @@ export class FollowerPresenter extends UserItemPresenter {
       this.lastItem
     );
   }
-    // public async loadMoreItems(authToken: AuthToken, userAlias: string) {
-    //   this.doFailureReportingOperation(async ()=>{
-    //     const [newItems, hasMore] = await this.service.loadMoreFollowers(
-    //       authToken!,
-    //       userAlias,
-    //       PAGE_SIZE,
-    //       this.lastItem
-    //     );
-  
-    //     this.hasMoreItems = hasMore;
-    //     this.lastItem = newItems[newItems.length - 1];
-    //     this.view.addItems(newItems);
-    //   },
-    //   "load followers")
-    //   };
 }
