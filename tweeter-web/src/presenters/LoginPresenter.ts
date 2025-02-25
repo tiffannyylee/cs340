@@ -10,24 +10,16 @@ export class LoginPresenter extends LoginParentPresenter {
         return super.view as UserAuthView
       }
 
-    // public checkSubmitButtonStatus(alias:string, password:string): boolean {
-    //     return !alias || !password;
-    //   };
-
     public async doLogin(alias:string, password:string, rememberMe: boolean, originalUrl: string) {
-        this.doFailureReportingOperation(async()=>{
-            this.isLoading=true;
-
+        this.doLoadingAndAuthOperation(async ()=>{
             const [user, authToken] = await this.service.login(alias, password);
-
             this.view.updateUserInfo(user, user, authToken, rememberMe);
-
             if (!!originalUrl) {
             this.view.navigateTo(originalUrl);
             } else {
             this.view.navigateTo("/");
             }
-        }, "log user in")
-            this.isLoading=false;
+        },"log user in")
+            // this.isLoading=false;
     };
 }
