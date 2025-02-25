@@ -6,16 +6,18 @@ import useToastListener from "../toaster/ToastListenerHook";
 import StatusItem from "../statusItem/StatusItem";
 import useUserInfo from "../userInfo/UserInfoHook";
 import { StatusItemPresenter, StatusItemView } from "../../presenters/StatusItemPresenter";
+import { PagedItemPresenter, PagedItemView } from "../../presenters/PagedItemPresenter";
 
 
-interface Props {
-    presenterGenerator : (view: StatusItemView) => StatusItemPresenter
+interface Props<T, U> {
+    presenterGenerator : (view: PagedItemView<T>) => PagedItemPresenter<T, U>;
+    itemGenerator: (item: T) => React.ReactNode;
 }
 
-const StatusItemScroller = (props:Props) => {
+const ItemScroller = <T,U>(props:Props<T, U>) => {
     const { displayErrorMessage } = useToastListener();
-  const [items, setItems] = useState<Status[]>([]);
-  const [newItems, setNewItems] = useState<Status[]>([]);
+  const [items, setItems] = useState<T[]>([]);
+  const [newItems, setNewItems] = useState<T[]>([]);
 
   const [changedDisplayedUser, setChangedDisplayedUser] = useState(true);
   
@@ -48,8 +50,8 @@ const StatusItemScroller = (props:Props) => {
     presenter.reset()
   }
 
-  const listener : StatusItemView ={
-    addItems: (newItems: Status[]) =>
+  const listener : PagedItemView<T> ={
+    addItems: (newItems: T[]) =>
     setNewItems(newItems),
     displayErrorMessage: displayErrorMessage
     
@@ -76,7 +78,8 @@ const StatusItemScroller = (props:Props) => {
             key={index}
             className="row mb-3 mx-0 px-0 border rounded bg-white"
           >
-            <StatusItem user = {item.user} status = {item}/>
+            {/* <StatusItem user = {item.user} status = {item}/> */}
+            {props.itemGenerator(item)}
           </div>
         ))}
       </InfiniteScroll>
@@ -84,4 +87,4 @@ const StatusItemScroller = (props:Props) => {
   );
 }
 
-export default StatusItemScroller;
+export default ItemScroller;
