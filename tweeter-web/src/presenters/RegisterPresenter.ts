@@ -1,15 +1,14 @@
 import { UserService } from "../model/UserService";
-import { RegisterParentPresenter, RegisterParentView } from "./RegisterParentPresenter";
+import { RegisterParentPresenter } from "./RegisterParentPresenter";
 import { Buffer } from "buffer";
+import { UserAuthView } from "./UserAuthPresenter";
 
 export class RegisterPresenter extends RegisterParentPresenter{
-    private userService: UserService;
-    public constructor(view: RegisterParentView){
+    public constructor(view: UserAuthView){
         super(view)
-        this.userService=new UserService()
     }
-    protected get view():RegisterParentView {
-      return super.view as RegisterParentView
+    protected get view():UserAuthView {
+      return super.view as UserAuthView
     }
 
     public checkSubmitButtonStatus(firstName:string,lastName:string,alias:string,password:string,imageUrl:string,imageFileExtension:string):boolean{
@@ -23,15 +22,11 @@ export class RegisterPresenter extends RegisterParentPresenter{
         );
       };
 
-      public getFileExtension(file: File): string | undefined {
-        return file.name.split(".").pop();
-      };    
-
     public async doRegister(firstName:string,lastName:string,alias:string,password:string,imageBytes:Uint8Array,imageFileExtension:string,rememberMe:boolean) {
-        try {
-            this.isLoading=true;
+        this.doFailureReportingOperation(async()=>{
+          this.isLoading=true;
 
-            const [user, authToken] = await this.userService.register(
+            const [user, authToken] = await this.service.register(
             firstName,
             lastName,
             alias,
@@ -42,14 +37,13 @@ export class RegisterPresenter extends RegisterParentPresenter{
 
             this.view.updateUserInfo(user, user, authToken, rememberMe);
             this.view.navigateTo("/");
-        } catch (error) {
-            this.view.displayErrorMessage(
-            `Failed to register user because of exception: ${error}`
-            );
-        } finally {
+        }, "register user")
             this.isLoading=false;
-        }
+
       };
+      public getFileExtension(file: File): string | undefined {
+        return file.name.split(".").pop();
+      };   
 
       public handleImageFile(file: File | undefined, setImageUrl:Function, setImageBytes:Function, setImageFileExtension:Function) {
         if (file) {

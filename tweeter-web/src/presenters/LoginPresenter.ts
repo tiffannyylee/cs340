@@ -1,15 +1,13 @@
-import { UserService } from "../model/UserService";
-import { LoginParentPresenter, LoginParentView, } from "./LoginParentPresenter";
+import { LoginParentPresenter, } from "./LoginParentPresenter";
+import { UserAuthView } from "./UserAuthPresenter";
 
 
 export class LoginPresenter extends LoginParentPresenter {
-    private userService: UserService;
-    public constructor(view: LoginParentView){
+    public constructor(view: UserAuthView){
         super(view)
-        this.userService=new UserService()
     }
-    protected get view():LoginParentView {
-        return super.view as LoginParentView
+    protected get view():UserAuthView {
+        return super.view as UserAuthView
       }
 
     public checkSubmitButtonStatus(alias:string, password:string): boolean {
@@ -20,7 +18,7 @@ export class LoginPresenter extends LoginParentPresenter {
         this.doFailureReportingOperation(async()=>{
             this.isLoading=true;
 
-            const [user, authToken] = await this.userService.login(alias, password);
+            const [user, authToken] = await this.service.login(alias, password);
 
             this.view.updateUserInfo(user, user, authToken, rememberMe);
 
@@ -30,24 +28,6 @@ export class LoginPresenter extends LoginParentPresenter {
             this.view.navigateTo("/");
             }
         }, "log user in")
-        // try {
-        //     this.isLoading=true;
-
-        //     const [user, authToken] = await this.userService.login(alias, password);
-
-        //     this.view.updateUserInfo(user, user, authToken, rememberMe);
-
-        //     if (!!originalUrl) {
-        //     this.view.navigateTo(originalUrl);
-        //     } else {
-        //     this.view.navigateTo("/");
-        //     }
-        // } catch (error) {
-        //     this.view.displayErrorMessage(
-        //     `Failed to log user in because of exception: ${error}`
-        //     );
-        // } finally {
             this.isLoading=false;
-        //}
     };
 }

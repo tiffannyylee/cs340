@@ -6,10 +6,11 @@ import AuthenticationFormLayout from "../AuthenticationFormLayout";
 import useToastListener from "../../toaster/ToastListenerHook";
 import AuthentificationFields from "../AuthenticationFields";
 import useUserInfo from "../../userInfo/UserInfoHook";
-import { RegisterParentPresenter, RegisterParentView } from "../../../presenters/RegisterParentPresenter";
+import { RegisterParentPresenter } from "../../../presenters/RegisterParentPresenter";
+import { UserAuthView } from "../../../presenters/UserAuthPresenter";
 
 interface Props {
-  presenterGenerator : (view: RegisterParentView) => RegisterParentPresenter
+  presenterGenerator : (view: UserAuthView) => RegisterParentPresenter
 }
 
 const Register = (props:Props) => {
@@ -27,7 +28,7 @@ const Register = (props:Props) => {
   const { updateUserInfo } = useUserInfo();
   const { displayErrorMessage } = useToastListener();
 
-  const listener : RegisterParentView = {
+  const listener : UserAuthView = {
     displayErrorMessage: displayErrorMessage,
     updateUserInfo: updateUserInfo, 
     navigateTo: navigate

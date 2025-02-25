@@ -17,7 +17,7 @@ export abstract class PagedItemPresenter<T, U> extends Presenter {
         super(view)
         this._service = this.createService()
     }
-    protected abstract createService():U;
+    protected abstract createService(): U;
     public get hasMoreItems() {
         return this._hasMoreItems
     }
@@ -56,8 +56,6 @@ export abstract class PagedItemPresenter<T, U> extends Presenter {
         };
     protected abstract getItemDescription(): string;
     protected abstract getMoreItems(authToken: AuthToken, userAlias: string): Promise<[T[], boolean]>;
-
-    // public abstract loadMoreItems(authToken: AuthToken, userAlias: string) : void
 }
 
 
