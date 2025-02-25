@@ -25,4 +25,7 @@ export abstract class UserAuthPresenter extends Presenter {
     protected get service() {
         return this._userService
     }
+    public checkSubmitButtonStatus(...fields: string[]): boolean {
+        return fields.some(field => !field);
+    }
 }

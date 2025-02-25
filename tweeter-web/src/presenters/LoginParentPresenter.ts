@@ -20,7 +20,7 @@ export abstract class LoginParentPresenter extends UserAuthPresenter {
     //     this._isLoading = value;
     // }
     public abstract doLogin(alias:string, password:string, rememberMe: boolean, originalUrl: string):void;
-    public abstract checkSubmitButtonStatus(alias:string, password:string): boolean;
+    // public abstract checkSubmitButtonStatus(alias:string, password:string): boolean;
 
 
 }

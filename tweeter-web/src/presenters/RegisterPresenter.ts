@@ -11,16 +11,16 @@ export class RegisterPresenter extends RegisterParentPresenter{
       return super.view as UserAuthView
     }
 
-    public checkSubmitButtonStatus(firstName:string,lastName:string,alias:string,password:string,imageUrl:string,imageFileExtension:string):boolean{
-        return (
-          !firstName ||
-          !lastName ||
-          !alias ||
-          !password ||
-          !imageUrl ||
-          !imageFileExtension
-        );
-      };
+    // public checkSubmitButtonStatus(firstName:string,lastName:string,alias:string,password:string,imageUrl:string,imageFileExtension:string):boolean{
+    //     return (
+    //       !firstName ||
+    //       !lastName ||
+    //       !alias ||
+    //       !password ||
+    //       !imageUrl ||
+    //       !imageFileExtension
+    //     );
+    //   };
 
     public async doRegister(firstName:string,lastName:string,alias:string,password:string,imageBytes:Uint8Array,imageFileExtension:string,rememberMe:boolean) {
         this.doFailureReportingOperation(async()=>{

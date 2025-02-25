@@ -10,9 +10,9 @@ export class LoginPresenter extends LoginParentPresenter {
         return super.view as UserAuthView
       }
 
-    public checkSubmitButtonStatus(alias:string, password:string): boolean {
-        return !alias || !password;
-      };
+    // public checkSubmitButtonStatus(alias:string, password:string): boolean {
+    //     return !alias || !password;
+    //   };
 
     public async doLogin(alias:string, password:string, rememberMe: boolean, originalUrl: string) {
         this.doFailureReportingOperation(async()=>{
