@@ -1,15 +1,15 @@
 import { UserService } from "../model/UserService";
-import { UserAuthPresenter, UserAuthView } from "./UserAuthPresenter";
+import { LoginParentPresenter, LoginParentView, } from "./LoginParentPresenter";
 
 
-export class LoginPresenter extends UserAuthPresenter {
+export class LoginPresenter extends LoginParentPresenter {
     private userService: UserService;
-    public constructor(view: UserAuthView){
+    public constructor(view: LoginParentView){
         super(view)
         this.userService=new UserService()
     }
-    protected get view():UserAuthView {
-        return super.view as UserAuthView
+    protected get view():LoginParentView {
+        return super.view as LoginParentView
       }
 
     public checkSubmitButtonStatus(alias:string, password:string): boolean {

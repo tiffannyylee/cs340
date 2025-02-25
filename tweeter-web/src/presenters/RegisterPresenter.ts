@@ -1,6 +1,5 @@
 import { UserService } from "../model/UserService";
 import { RegisterParentPresenter, RegisterParentView } from "./RegisterParentPresenter";
-import { UserAuthView } from "./UserAuthPresenter";
 import { Buffer } from "buffer";
 
 export class RegisterPresenter extends RegisterParentPresenter{
@@ -8,6 +7,9 @@ export class RegisterPresenter extends RegisterParentPresenter{
     public constructor(view: RegisterParentView){
         super(view)
         this.userService=new UserService()
+    }
+    protected get view():RegisterParentView {
+      return super.view as RegisterParentView
     }
 
     public checkSubmitButtonStatus(firstName:string,lastName:string,alias:string,password:string,imageUrl:string,imageFileExtension:string):boolean{

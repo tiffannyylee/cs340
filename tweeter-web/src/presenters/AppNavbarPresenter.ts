@@ -8,6 +8,9 @@ export class AppNavbarPresenter extends AppNavbarParentPresenter{
         super(view)
         this.userService = new UserService()
     }
+    protected get view():AppNavbarView {
+      return super.view as AppNavbarView
+    }
     public async logOut(authToken:AuthToken) {
         this.view.displayInfoMessage("Logging Out...", 0);
     

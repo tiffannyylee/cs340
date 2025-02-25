@@ -9,6 +9,9 @@ export class PostStatusPresenter extends PostStatusParentPresenter{
         super(view)
         this.statusService = new StatusService()
     }
+    protected get view():PostStatusView {
+      return super.view as PostStatusView
+    }
 
   public async submitPost(authToken:AuthToken, currentUser:User, post:string) {
     try {

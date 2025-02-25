@@ -19,7 +19,7 @@ import { FollowerPresenter } from "./presenters/FollowerPresenter";
 import { StatusItemPresenter, StatusItemView } from "./presenters/StatusItemPresenter";
 import { FeedPresenter } from "./presenters/FeedPresenter";
 import { StoryPresenter } from "./presenters/StoryPresenter";
-import { UserAuthPresenter, UserAuthView } from "./presenters/UserAuthPresenter";
+import { LoginParentView } from "./presenters/LoginParentPresenter";
 import { LoginPresenter } from "./presenters/LoginPresenter";
 import { RegisterParentView } from "./presenters/RegisterParentPresenter";
 import { RegisterPresenter } from "./presenters/RegisterPresenter";
@@ -94,9 +94,9 @@ const UnauthenticatedRoutes = () => {
 
   return (
     <Routes>
-      <Route path="/login" element={<Login presenterGenerator={(view: UserAuthView)=> new LoginPresenter(view)}/>} />
+      <Route path="/login" element={<Login presenterGenerator={(view: LoginParentView)=> new LoginPresenter(view)}/>} />
       <Route path="/register" element={<Register presenterGenerator={(view: RegisterParentView)=> new RegisterPresenter(view)}/>} />
-      <Route path="*" element={<Login originalUrl={location.pathname} presenterGenerator={(view: UserAuthView)=> new LoginPresenter(view)}/>} />
+      <Route path="*" element={<Login originalUrl={location.pathname} presenterGenerator={(view: LoginParentView)=> new LoginPresenter(view)}/>} />
     </Routes>
   );
 };

@@ -1,7 +1,7 @@
 import { AuthToken, User } from "tweeter-shared"
-import { View, Presenter } from "./Presenter"
+import { View, Presenter, MessageView } from "./Presenter"
 
-export interface UserInfoView extends View {
+export interface UserInfoView extends MessageView {
 
 }
 export abstract class UserInfoParentPresenter extends Presenter {

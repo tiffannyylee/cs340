@@ -1,15 +1,15 @@
 import { User, AuthToken } from "tweeter-shared";
 import { View, Presenter } from "./Presenter";
 
-export interface UserAuthView extends View {
+export interface LoginParentView extends View {
     updateUserInfo(user: User, user1: User, authToken: AuthToken, rememberMe: any): void;
     navigateTo:(url: string)=> void;
 }
-export abstract class UserAuthPresenter extends Presenter {
+export abstract class LoginParentPresenter extends Presenter {
 
     private _isLoading = false;
 
-    protected constructor(view: UserAuthView) {
+    protected constructor(view: LoginParentView) {
         super(view)
     }
     protected get isLoading() {

@@ -8,6 +8,9 @@ export class UserInfoPresenter extends UserInfoParentPresenter {
         super(view)
         this.followService=new FollowService()
     }
+    protected get view():UserInfoView {
+      return super.view as UserInfoView
+    }
     public async setIsFollowerStatus(
         authToken: AuthToken,
         currentUser: User,
