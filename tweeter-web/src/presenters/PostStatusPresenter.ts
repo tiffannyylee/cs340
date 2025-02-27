@@ -3,13 +3,21 @@ import { StatusService } from "../model/StatusService";
 import { PostStatusParentPresenter, PostStatusView } from "./PostStatusParentPresenter";
 
 export class PostStatusPresenter extends PostStatusParentPresenter{
-    private statusService: StatusService;
+    private _statusService: StatusService|null=null;
+
     public constructor(view:PostStatusView){
         super(view)
-        this.statusService = new StatusService()
+        // this._statusService = new StatusService()
     }
     protected get view():PostStatusView {
       return super.view as PostStatusView
+    }
+
+    public get statusService() {
+      if (this._statusService == null) {
+        this._statusService = new StatusService()
+      }
+      return this._statusService
     }
 
   public async submitPost(authToken:AuthToken, currentUser:User, post:string) {

@@ -6,7 +6,7 @@ export interface MessageView extends View{
     clearLastInfoMessage: () => void
 }
 export class Presenter {
-    protected _isLoading: boolean
+    public _isLoading: boolean
     private _view: View
 
     protected constructor(view: View) {
@@ -17,10 +17,10 @@ export class Presenter {
     protected get view(): View {
         return this._view
     }
-    protected get isLoading(){
+    public get isLoading(){
         return this._isLoading
     }
-    protected set isLoading(value:boolean){
+    public set isLoading(value:boolean){
         this._isLoading = value
     }
     public async doFailureReportingOperation(operation: () => Promise<void>, operationDescription:string) {
