@@ -3,8 +3,10 @@ import { useState } from "react";
 import useToastListener from "../toaster/ToastListenerHook";
 import useUserInfo from "../userInfo/UserInfoHook";
 import { PostStatusParentPresenter, PostStatusView } from "../../presenters/PostStatusParentPresenter";
+import { PostStatusPresenter } from "../../presenters/PostStatusPresenter";
 interface Props {
-  presenterGenerator : (view: PostStatusView) => PostStatusParentPresenter
+  // presenterGenerator : (view: PostStatusView) => PostStatusParentPresenter
+  presenter?: PostStatusPresenter 
 }
 
 const PostStatus = (props:Props) => {
@@ -22,7 +24,9 @@ const PostStatus = (props:Props) => {
     updatePost: setPost,
   }
 
-  const presenter = props.presenterGenerator(listener)
+  // const presenter = props.presenterGenerator(listener)
+  const [presenter] = useState(props.presenter ?? new PostStatusPresenter(listener))
+
 
   const submitPost = async (event: React.MouseEvent) => {
     event.preventDefault();

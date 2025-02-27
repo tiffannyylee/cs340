@@ -23,7 +23,9 @@ const MainLayout = () => {
               </div>
               <div className="p-3 border mt-1 rounded bg-light">
                 {/* <PostStatus /> */}
-                <PostStatus presenterGenerator={(view: PostStatusView)=> new PostStatusPresenter(view)}/>
+                {/* <PostStatus presenterGenerator={(view: PostStatusView)=> new PostStatusPresenter(view)}/> */}
+                <PostStatus />
+
               </div>
             </div>
           </div>

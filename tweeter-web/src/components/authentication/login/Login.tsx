@@ -8,10 +8,12 @@ import AuthentificationFields from "../AuthenticationFields";
 import useUserInfo from "../../userInfo/UserInfoHook";
 import { LoginParentPresenter } from "../../../presenters/LoginParentPresenter";
 import { UserAuthView } from "../../../presenters/UserAuthPresenter";
+import { LoginPresenter } from "../../../presenters/LoginPresenter";
 
 interface Props {
   originalUrl?: string;
-  presenterGenerator : (view: UserAuthView) => LoginParentPresenter
+  // presenterGenerator : (view: UserAuthView) => LoginParentPresenter
+  presenter?: LoginPresenter;
 }
 
 const Login = (props: Props) => {
@@ -30,7 +32,8 @@ const Login = (props: Props) => {
     navigateTo: navigate
   }
 
-  const presenter = props.presenterGenerator(listener)
+  // const presenter = props.presenterGenerator(listener)
+  const [presenter] = useState(props.presenter ?? new LoginPresenter(listener))
 
   const loginOnEnter = (event: React.KeyboardEvent<HTMLElement>) => {
     if (event.key == "Enter" && !presenter.checkSubmitButtonStatus(alias,password)) {

@@ -45,7 +45,7 @@ const AuthenticationFormLayout = (props: Props) => {
               <Oauth companyNameCap = "Facebook" companyNameLower="facebook" companyTooltipId="facebookTooltip" />
               <Oauth companyNameCap = "Twitter" companyNameLower="twitter" companyTooltipId="twitterTooltip" />
               <Oauth companyNameCap = "Github" companyNameLower="github" companyTooltipId="githubTooltip" />
-              <Oauth companyNameCap = "LinkedIn" companyNameLower="linkedIn" companyTooltipId="linkedInTooltip" />
+              <Oauth companyNameCap = "LinkedIn" companyNameLower="linkedin" companyTooltipId="linkedInTooltip" />
             </div>
             
             <div className="checkbox mb-3">
