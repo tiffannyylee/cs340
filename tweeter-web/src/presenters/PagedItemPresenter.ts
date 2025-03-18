@@ -1,4 +1,4 @@
-import { AuthToken, Status, User } from "tweeter-shared";
+import { AuthToken } from "tweeter-shared";
 import { Presenter, View } from "./Presenter";
 export const PAGE_SIZE = 10;
 

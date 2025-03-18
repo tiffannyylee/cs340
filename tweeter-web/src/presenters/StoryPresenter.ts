@@ -1,5 +1,4 @@
 import { AuthToken, Status } from "tweeter-shared";
-import { StatusService } from "../model/StatusService";
 import { StatusItemPresenter, StatusItemView } from "./StatusItemPresenter";
 import { PAGE_SIZE } from "./PagedItemPresenter";
 
