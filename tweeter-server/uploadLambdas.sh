@@ -27,6 +27,7 @@ do
             --function-name  "$function_name" \
             --s3-bucket $BUCKET \
             --s3-key code/lambdalist.zip \
+            --region us-east-1 \
             1>>/dev/null \
             &
         echo lambda $i, "$function_name", updating from s3
@@ -38,6 +39,7 @@ do
             --role $LAMBDA_ROLE \
             --handler "$handler" \
             --code S3Bucket=$BUCKET,S3Key=code/lambdalist.zip \
+            --region us-east-1 \
             1>>/dev/null \
             &
         echo lambda $i, "$function_name", created from s3
