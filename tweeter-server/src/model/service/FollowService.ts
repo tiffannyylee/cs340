@@ -8,7 +8,7 @@ export class FollowService{
       ): Promise<[UserDto[], boolean]> {
         // TODO: Replace with the result of calling server
         const [items, hasMore] = FakeData.instance.getPageOfUsers(User.fromDto(lastItem), pageSize, userAlias);
-        const dtos = items.map((user)=>user.dto)
+        const dtos = items.map((user:User)=>user.dto)
         return [dtos, hasMore]
       };
     
@@ -20,7 +20,7 @@ export class FollowService{
       ): Promise<[UserDto[], boolean]> {
         // TODO: Replace with the result of calling server
         const [items, hasMore] = FakeData.instance.getPageOfUsers(User.fromDto(lastItem), pageSize, userAlias);
-        const dtos = items.map((user)=>user.dto);
+        const dtos = items.map((user:User)=>user.dto);
         return [dtos, hasMore];
       };
 
