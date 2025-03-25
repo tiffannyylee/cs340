@@ -16,6 +16,8 @@ export { FakeData } from "./util/FakeData";
 //
 export type { PagedUserItemRequest } from "./model/net/request/PagedUserItemRequest";
 export type { TweeterRequest } from "./model/net/request/TweeterRequest"
+export type { GetIsFollowerRequest } from "./model/net/request/GetIsFollowerRequest";
+
 
 //
 // Dto's
@@ -26,5 +28,7 @@ export type { UserDto } from "./model/dto/UserDto"
 //
 export type { PagedUserItemResponse } from "./model/net/response/PagedUserItemResponse"
 export type { TweeterResponse } from "./model/net/response/TweeterResponse"
+export type { GetIsFollowerResponse } from "./model/net/response/GetIsFollowerResponse";
+
 
 
