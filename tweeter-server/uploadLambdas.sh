@@ -21,7 +21,7 @@ do
     function_name=$(echo "$lambda_info" | cut -d '|' -f 1 | tr -d '[:space:]')
     handler=$(echo "$lambda_info" | cut -d '|' -f 2 | tr -d '[:space:]')
 
-    if aws lambda get-function --function-name "$function_name" &>/dev/null; then
+    if aws lambda get-function --function-name "$function_name" --region us-east-1 &>/dev/null; then
         # Lambda exists, update code
         aws lambda update-function-code \
             --function-name  "$function_name" \
