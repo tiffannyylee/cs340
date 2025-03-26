@@ -9,7 +9,7 @@ import {
   import { ClientCommunicator } from "./ClientCommunicator";
   
   export class ServerFacade {
-    private SERVER_URL = "TODO: Set this value.";
+    private SERVER_URL = "https://v3hccfzuhf.execute-api.us-east-1.amazonaws.com/dev";
   
     private clientCommunicator = new ClientCommunicator(this.SERVER_URL);
   
@@ -70,6 +70,7 @@ import {
       const response = await this.clientCommunicator.doPost<GetIsFollowerRequest,GetIsFollowerResponse>(request, "/follower/isFollower")
 
       if (response.success) {
+        console.log(`success: ${response.success}, message:${response.message}, isFollower: ${response.isFollower}`)
         return response.isFollower
         } else {
           console.error(response);
