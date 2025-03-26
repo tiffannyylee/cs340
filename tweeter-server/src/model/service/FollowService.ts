@@ -36,10 +36,10 @@ export class FollowService{
 
       public async getFolloweeCount(
         token: string,
-        user: UserDto
+        userAlias: string
       ): Promise<number> {
         // TODO: Replace with the result of calling server
-        return FakeData.instance.getFolloweeCount(user.alias);
+        return FakeData.instance.getFolloweeCount(userAlias);
       };
 
       public async getFollowerCount (
@@ -50,9 +50,17 @@ export class FollowService{
         return FakeData.instance.getFollowerCount(userAlias);
       };
 
+      public async getFollowCount(type: "follower" | "followee", token: string, userAlias: string): Promise<number> {
+        if (type === "follower") {
+            return await this.getFollowerCount(token, userAlias);
+        } else {
+            return await this.getFolloweeCount(token, userAlias);
+        }
+    }
+
       public async follow (
         token: string,
-        userToFollow: UserDto
+        userToFollow: string
       ): Promise<[followerCount: number, followeeCount: number]> {
         // Pause so we can see the follow message. Remove when connected to the server
         await new Promise((f) => setTimeout(f, 2000));

@@ -5,6 +5,8 @@ import {
     User,
     UserDto,
     GetIsFollowerResponse,
+    GetFollowCountRequest,
+    GetFollowCountResponse,
   } from "tweeter-shared";
   import { ClientCommunicator } from "./ClientCommunicator";
   
@@ -77,5 +79,15 @@ import {
           throw new Error(response.message ?? "An unknown error occurred.");
         }
       }
+    public async getFollowerCount(request: GetFollowCountRequest): Promise<number> {
+      const response = await this.clientCommunicator.doPost<GetFollowCountRequest,GetFollowCountResponse>(request, "/follower/count")
+      if (response.success) {
+        console.log(`success: ${response.success}, message:${response.message}, followerCount: ${response.followCount}`)
+        return response.followCount
+      } else {
+        console.error(response);
+        throw new Error(response.message?? "An unknown error with getting follower count occurred.")
+      }
+    }
     }
   

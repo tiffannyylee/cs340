@@ -58,7 +58,12 @@ export class FollowService{
         user: User
       ): Promise<number> {
         // TODO: Replace with the result of calling server
-        return FakeData.instance.getFollowerCount(user.alias);
+        const request = {
+          token: authToken.token,
+          userAlias: user.alias
+        }
+        // return FakeData.instance.getFollowerCount(user.alias);
+        return server.getFollowerCount(request)
       };
 
       public async follow (
