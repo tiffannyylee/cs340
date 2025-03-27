@@ -11,6 +11,10 @@ import {
     FollowOrUnfollowResponse,
     PostStatusRequest,
     PostStatusResponse,
+    LoginRequest,
+    AuthToken,
+    AuthResponse,
+    RegisterRequest,
   } from "tweeter-shared";
   import { ClientCommunicator } from "./ClientCommunicator";
 import { LoadFeedOrStoryRequest } from "tweeter-shared";
@@ -176,6 +180,37 @@ import { Status } from "tweeter-shared";
           }else {
             console.error(response);
             throw new Error(response.message??"An error with post status")
+          }
+        }
+        public async login(request: LoginRequest) : Promise<[User, AuthToken]> {
+          //recieve as dto, return response as obj
+          const response = await this.clientCommunicator.doPost<LoginRequest,AuthResponse>(request, "/user/login")
+          const user = User.fromDto(response.user)
+          const auth = AuthToken.fromDto(response.authToken)
+          if (response.success) {
+            if (user == null || auth == null) {
+              throw new Error('no user or auth found');
+            } else {
+              return[user,auth]
+            }
+          } else {
+            console.error(response);
+            throw new Error(response.message??"error with login")
+          }
+        }
+        public async register(request: RegisterRequest) : Promise<[User, AuthToken]> {
+          const response = await this.clientCommunicator.doPost<RegisterRequest,AuthResponse>(request, "/user/register")
+          const user = User.fromDto(response.user)
+          const auth = AuthToken.fromDto(response.authToken)
+          if (response.success) {
+            if (user == null || auth == null) {
+              throw new Error('no user or auth found');
+            } else {
+              return[user,auth]
+            }
+          } else {
+            console.error(response);
+            throw new Error(response.message??"error with register")
           }
         }
     }

@@ -1,19 +1,20 @@
 import { User, AuthToken, FakeData } from "tweeter-shared";
 import { Buffer } from "buffer";
-
+import { ServerFacade } from "../../network/ServerFacade";
+const server = new ServerFacade();
 export class UserService {
     public async login (
         alias: string,
         password: string
         ): Promise<[User, AuthToken]> {
         // TODO: Replace with the result of calling the server
-        const user = FakeData.instance.firstUser;
+        // const user = FakeData.instance.firstUser;
 
-        if (user === null) {
-            throw new Error("Invalid alias or password");
-        }
-
-        return [user, FakeData.instance.authToken];
+        // if (user === null) {
+        //     throw new Error("Invalid alias or password");
+        // }
+        const request = {alias:alias, password:password}
+        return server.login(request);
         };
     public async register (
         firstName: string,
@@ -28,13 +29,21 @@ export class UserService {
             Buffer.from(userImageBytes).toString("base64");
     
         // TODO: Replace with the result of calling the server
-        const user = FakeData.instance.firstUser;
+        // const user = FakeData.instance.firstUser;
     
-        if (user === null) {
-            throw new Error("Invalid registration");
+        // if (user === null) {
+        //     throw new Error("Invalid registration");
+        // }
+        const request = {
+            firstName:firstName,
+            lastName:lastName,
+            alias:alias,
+            password:password,
+            userImageBytes:imageStringBase64,
+            imageFileExtension:imageFileExtension
         }
     
-        return [user, FakeData.instance.authToken];
+        return server.register(request);
         };
     public async getUser (
         authToken: AuthToken,
