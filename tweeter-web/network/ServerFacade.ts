@@ -20,6 +20,8 @@ import {
 import { LoadFeedOrStoryRequest } from "tweeter-shared";
 import { LoadFeedOrStoryResponse } from "tweeter-shared";
 import { Status } from "tweeter-shared";
+import { GetUserRequest } from "tweeter-shared";
+import { GetUserResponse } from "tweeter-shared";
   
   export class ServerFacade {
     private SERVER_URL = "https://v3hccfzuhf.execute-api.us-east-1.amazonaws.com/dev";
@@ -211,6 +213,20 @@ import { Status } from "tweeter-shared";
           } else {
             console.error(response);
             throw new Error(response.message??"error with register")
+          }
+        }
+        public async getUser(request: GetUserRequest) : Promise<User | null> {
+          const response = await this.clientCommunicator.doPost<GetUserRequest,GetUserResponse>(request, "/user/get")
+          const user = User.fromDto(response.user)
+          if (response.success) {
+            if(user==null){
+              return null
+            } else{
+              return user
+            }
+          } else {
+            console.error(response);
+            throw new Error(response.message??"error with get user")
           }
         }
     }

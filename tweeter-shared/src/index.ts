@@ -23,6 +23,8 @@ export type { LoadFeedOrStoryRequest } from "./model/net/request/LoadFeedOrStory
 export type { PostStatusRequest } from "./model/net/request/PostStatusRequest";
 export type { LoginRequest } from "./model/net/request/LoginRequest";
 export type { RegisterRequest } from "./model/net/request/RegisterRequest";
+export type { GetUserRequest } from "./model/net/request/GetUserRequest";
+
 
 
 
@@ -46,6 +48,7 @@ export type { FollowOrUnfollowResponse } from "./model/net/response/FollowOrUnfo
 export type { LoadFeedOrStoryResponse } from "./model/net/response/LoadFeedOrStoryResponse";
 export type { PostStatusResponse } from "./model/net/response/PostStatusResponse";
 export type { AuthResponse } from "./model/net/response/AuthResponse";
+export type { GetUserResponse } from "./model/net/response/GetUserResponse";
 
 
 

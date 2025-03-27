@@ -50,7 +50,12 @@ export class UserService {
         alias: string
         ): Promise<User | null> {
         // TODO: Replace with the result of calling server
-        return FakeData.instance.findUserByAlias(alias);
+        // return FakeData.instance.findUserByAlias(alias);
+        const request = {
+            token: authToken.token,
+            alias: alias
+        }
+        return server.getUser(request)
         };
     public async logout (authToken: AuthToken): Promise<void> {
         // Pause so we can see the logging out message. Delete when the call to the server is implemented.
