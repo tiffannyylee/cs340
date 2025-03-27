@@ -18,12 +18,16 @@ export type { PagedUserItemRequest } from "./model/net/request/PagedUserItemRequ
 export type { TweeterRequest } from "./model/net/request/TweeterRequest"
 export type { GetIsFollowerRequest } from "./model/net/request/GetIsFollowerRequest";
 export type { GetFollowCountRequest } from "./model/net/request/GetFollowCountRequest";
-
+export type { FollowOrUnfollowRequest } from "./model/net/request/FollowOrUnfollowRequest";
+export type { LoadFeedOrStoryRequest } from "./model/net/request/LoadFeedOrStoryRequest";
 
 
 //
 // Dto's
 //
+export type { AuthTokenDto } from "./model/dto/AuthTokenDto"
+export type { PostSegmentDto } from "./model/dto/PostSegmentDto"
+export type { StatusDto } from "./model/dto/StatusDto"
 export type { UserDto } from "./model/dto/UserDto"
 //
 // responses
@@ -32,6 +36,10 @@ export type { PagedUserItemResponse } from "./model/net/response/PagedUserItemRe
 export type { TweeterResponse } from "./model/net/response/TweeterResponse"
 export type { GetIsFollowerResponse } from "./model/net/response/GetIsFollowerResponse";
 export type { GetFollowCountResponse } from "./model/net/response/GetFollowCountResponse";
+export type { FollowOrUnfollowResponse } from "./model/net/response/FollowOrUnfollowResponse";
+export type { LoadFeedOrStoryResponse } from "./model/net/response/LoadFeedOrStoryResponse";
+
+
 
 
 

@@ -7,8 +7,13 @@ import {
     GetIsFollowerResponse,
     GetFollowCountRequest,
     GetFollowCountResponse,
+    FollowOrUnfollowRequest,
+    FollowOrUnfollowResponse,
   } from "tweeter-shared";
   import { ClientCommunicator } from "./ClientCommunicator";
+import { LoadFeedOrStoryRequest } from "tweeter-shared";
+import { LoadFeedOrStoryResponse } from "tweeter-shared";
+import { Status } from "tweeter-shared";
   
   export class ServerFacade {
     private SERVER_URL = "https://v3hccfzuhf.execute-api.us-east-1.amazonaws.com/dev";
@@ -89,5 +94,60 @@ import {
         throw new Error(response.message?? "An unknown error with getting follower count occurred.")
       }
     }
+    public async getFolloweeCount(request: GetFollowCountRequest) : Promise<number> {
+      const response = await this.clientCommunicator.doPost<GetFollowCountRequest,GetFollowCountResponse>(request, "/followee/count")
+      if (response.success) {
+        console.log(`success: ${response.success}, message:${response.message}, followeeCount: ${response.followCount}`)
+        return response.followCount
+      } else {
+        console.error(response);
+        throw new Error(response.message?? "An unknown error with getting followee count occurred.")
+      }
+    }
+    public async followUser(request: FollowOrUnfollowRequest) : Promise<[followerCount: number, followeeCount: number]> {
+      const response = await this.clientCommunicator.doPost<FollowOrUnfollowRequest,FollowOrUnfollowResponse>(request, "/follower/follow")
+      if (response.success) {
+        console.log(`This is for follow user: message:${response.message}, followerCount:${response.followerCount}, followeeCount:${response.followeeCount}`)
+        const followers = response.followerCount
+        const followees = response.followeeCount
+        return [followers, followees]
+      } else {
+        console.error(response);
+        throw new Error(response.message??"An error with follow")
+      }
+    }
+    public async unfollowUser(request: FollowOrUnfollowRequest) : Promise<[followerCount: number, followeeCount: number]> {
+      const response = await this.clientCommunicator.doPost<FollowOrUnfollowRequest,FollowOrUnfollowResponse>(request, "/follower/unfollow")
+      if (response.success) {
+        console.log(`This is for unfollow user: message:${response.message}, followerCount:${response.followerCount}, followeeCount:${response.followeeCount}`)
+        const followers = response.followerCount
+        const followees = response.followeeCount
+        return [followers, followees]
+      } else {
+        console.error(response);
+        throw new Error(response.message??"An error with unfollow")
+      }
+    }
+    //
+    // Status
+    //
+    public async loadFeed(request: LoadFeedOrStoryRequest) : Promise<[Status[], boolean]> {
+      const response = await this.clientCommunicator.doPost<LoadFeedOrStoryRequest,LoadFeedOrStoryResponse>(request, "/status/feed/load")
+      // Convert the UserDto array returned by ClientCommunicator to a User array
+      const items: Status[] | null =
+      response.success && response.newItems
+        ? response.newItems.map((dto) => Status.fromDto(dto) as Status)
+        : null;
+      if (response.success) {
+        if (items == null) {
+          throw new Error(`No followees found`);
+        } else{
+        console.log(`This is for loadfeed: message:${response.message}, hasMore:${response.hasMore}`)
+        return [items, response.hasMore]
+      } }else {
+          console.error(response);
+          throw new Error(response.message??"An error with unfollow")
+        }
+      }
     }
   

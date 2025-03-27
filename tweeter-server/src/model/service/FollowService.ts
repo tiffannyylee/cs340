@@ -87,6 +87,13 @@ export class FollowService{
     
         return [followerCount, followeeCount];
       };
+      public async getFollowOrUnfollow(type: "follow" | "unfollow", token: string, userToDoAction: string): Promise<[followerCount: number, followeeCount: number]> {
+        if (type === "follow") {
+            return await this.follow(token, userToDoAction);
+        } else {
+            return await this.unfollow(token, userToDoAction);
+        }
+    }
       
       
 }
