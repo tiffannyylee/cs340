@@ -26,7 +26,13 @@ export class StatusService{
       lastItem: Status | null
     ): Promise<[Status[], boolean]> {
       // TODO: Replace with the result of calling server
-      return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
+      const request = {
+        token : authToken.token,
+        userAlias : userAlias,
+        pageSize : pageSize,
+        lastItem : lastItem
+      }
+      return server.loadStory(request);
     };
     public async postStatus(
       authToken: AuthToken,
@@ -36,5 +42,6 @@ export class StatusService{
       await new Promise((f) => setTimeout(f, 2000));
   
       // TODO: Call the server to post the status
+      return server.postStory({token:authToken.token,newStatus:newStatus})
     };
 }

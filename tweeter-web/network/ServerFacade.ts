@@ -9,6 +9,8 @@ import {
     GetFollowCountResponse,
     FollowOrUnfollowRequest,
     FollowOrUnfollowResponse,
+    PostStatusRequest,
+    PostStatusResponse,
   } from "tweeter-shared";
   import { ClientCommunicator } from "./ClientCommunicator";
 import { LoadFeedOrStoryRequest } from "tweeter-shared";
@@ -140,14 +142,41 @@ import { Status } from "tweeter-shared";
         : null;
       if (response.success) {
         if (items == null) {
-          throw new Error(`No followees found`);
+          throw new Error(`No feed found`);
         } else{
         console.log(`This is for loadfeed: message:${response.message}, hasMore:${response.hasMore}`)
         return [items, response.hasMore]
       } }else {
           console.error(response);
-          throw new Error(response.message??"An error with unfollow")
+          throw new Error(response.message??"An error with loadFeed")
         }
       }
+      public async loadStory(request: LoadFeedOrStoryRequest) : Promise<[Status[], boolean]> {
+        const response = await this.clientCommunicator.doPost<LoadFeedOrStoryRequest,LoadFeedOrStoryResponse>(request, "/status/story/load")
+        // Convert the UserDto array returned by ClientCommunicator to a User array
+        const items: Status[] | null =
+        response.success && response.newItems
+          ? response.newItems.map((dto) => Status.fromDto(dto) as Status)
+          : null;
+        if (response.success) {
+          if (items == null) {
+            throw new Error(`No story found`);
+          } else{
+          console.log(`This is for loadstory: message:${response.message}, hasMore:${response.hasMore}`)
+          return [items, response.hasMore]
+        } }else {
+            console.error(response);
+            throw new Error(response.message??"An error with loadStory")
+          }
+        }
+        public async postStory(request: PostStatusRequest) : Promise<void> {
+          const response = await this.clientCommunicator.doPost<PostStatusRequest,PostStatusResponse>(request, "/status/post")
+          if (response.success) {
+            console.log("successful story post")
+          }else {
+            console.error(response);
+            throw new Error(response.message??"An error with post status")
+          }
+        }
     }
   

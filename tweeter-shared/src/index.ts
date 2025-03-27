@@ -20,6 +20,8 @@ export type { GetIsFollowerRequest } from "./model/net/request/GetIsFollowerRequ
 export type { GetFollowCountRequest } from "./model/net/request/GetFollowCountRequest";
 export type { FollowOrUnfollowRequest } from "./model/net/request/FollowOrUnfollowRequest";
 export type { LoadFeedOrStoryRequest } from "./model/net/request/LoadFeedOrStoryRequest";
+export type { PostStatusRequest } from "./model/net/request/PostStatusRequest";
+
 
 
 //
@@ -38,6 +40,8 @@ export type { GetIsFollowerResponse } from "./model/net/response/GetIsFollowerRe
 export type { GetFollowCountResponse } from "./model/net/response/GetFollowCountResponse";
 export type { FollowOrUnfollowResponse } from "./model/net/response/FollowOrUnfollowResponse";
 export type { LoadFeedOrStoryResponse } from "./model/net/response/LoadFeedOrStoryResponse";
+export type { PostStatusResponse } from "./model/net/response/PostStatusResponse";
+
 
 
 
