@@ -15,6 +15,8 @@ import {
     AuthToken,
     AuthResponse,
     RegisterRequest,
+    LogoutRequest,
+    LogoutResponse,
   } from "tweeter-shared";
   import { ClientCommunicator } from "./ClientCommunicator";
 import { LoadFeedOrStoryRequest } from "tweeter-shared";
@@ -227,6 +229,12 @@ import { GetUserResponse } from "tweeter-shared";
           } else {
             console.error(response);
             throw new Error(response.message??"error with get user")
+          }
+        }
+        public async logout(request: LogoutRequest) : Promise<void> {
+          const response = await this.clientCommunicator.doPost<LogoutRequest,LogoutResponse>(request, "/user/logout")
+          if (response.success){
+            console.log("user logged out")
           }
         }
     }
