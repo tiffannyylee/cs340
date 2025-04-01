@@ -7,12 +7,12 @@ export class UserService {
         password: string
         ): Promise<[UserDto, AuthTokenDto]> {
         // TODO: Replace with the result of calling the server
-        const user = FakeData.instance.firstUser;
+        const user = FakeData.instance.firstUser; //get user from db
         if (user === null) {
             throw new Error("Invalid alias or password");
         }
         const userDto = user.dto
-        const authDto = (FakeData.instance.authToken).dto
+        const authDto = (FakeData.instance.authToken).dto //get authtoken from db
         //return a dto to send back to client
         return [userDto, authDto];
         };
