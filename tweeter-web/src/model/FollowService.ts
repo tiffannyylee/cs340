@@ -16,7 +16,7 @@ export class FollowService{
           token: authToken.token,
           userAlias: userAlias,
           pageSize: pageSize,
-          lastItem: lastItem
+          lastItem: lastItem ? lastItem.dto : null
         };
         return server.getMoreFollowers(request)
       };
@@ -32,7 +32,7 @@ export class FollowService{
           token: authToken.token,
           userAlias: userAlias,
           pageSize: pageSize,
-          lastItem: lastItem
+          lastItem: lastItem ? lastItem.dto : null
         };
         // return FakeData.instance.getPageOfUsers(lastItem, pageSize, userAlias);
         return server.getMoreFollowees(request)
@@ -46,8 +46,8 @@ export class FollowService{
         // TODO: Replace with the result of calling server
         const request = {
           token: authToken.token,
-          user: user,
-          selectedUser: selectedUser
+          user: user.dto,
+          selectedUser: selectedUser.dto
         }
         // return FakeData.instance.isFollower();
         return server.getIsFollower(request)

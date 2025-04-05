@@ -2,6 +2,9 @@ import { FollowsDao } from "../FollowsDao";
 import { S3Dao } from "../S3Dao";
 import { StatusDao } from "../StatusDao";
 import { UserDao } from "../UserDao";
+import { FollowsDynamoDao } from "../dynamoDB/FollowsDynamoDao";
+import { S3DynamoDao } from "../dynamoDB/S3DynamoDao";
+import { StatusDynamoDao } from "../dynamoDB/StatusDynamoDao";
 import { UserDynamoDao } from "../dynamoDB/UserDynamoDao";
 import { DaoFactory } from "./DaoFactory";
 
@@ -10,13 +13,13 @@ export class DynamoDaoFactory implements DaoFactory {
         return new UserDynamoDao();
     }
     createStatusDao(): StatusDao {
-        throw new Error("Method not implemented.");
+        return new StatusDynamoDao();
     }
     createFollowsDao(): FollowsDao {
-        throw new Error("Method not implemented.");
+        return new FollowsDynamoDao();
     }
     createS3Dao(): S3Dao {
-        throw new Error("Method not implemented.");
+        return new S3DynamoDao();
     }
     
 }

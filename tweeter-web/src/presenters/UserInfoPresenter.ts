@@ -21,9 +21,16 @@ export class UserInfoPresenter extends UserInfoParentPresenter {
           if (currentUser === displayedUser) {
             setIsFollower(false);
           } else {
-            this.isFollower=(
-              await this.followService.getIsFollowerStatus(authToken!, currentUser!, displayedUser!)
+            // this.isFollower=(
+            //   await this.followService.getIsFollowerStatus(authToken!, currentUser!, displayedUser!)
+            // );
+            const status = await this.followService.getIsFollowerStatus(
+              authToken,
+              currentUser,
+              displayedUser
             );
+            this.isFollower = status;
+            setIsFollower(status);
           }
         } catch (error) {
           this.view.displayErrorMessage(

@@ -39,6 +39,7 @@ import { GetUserResponse } from "tweeter-shared";
       >(request, "/followee/list");
   
       // Convert the UserDto array returned by ClientCommunicator to a User array
+      console.log("DynamoDB Response:", response);
       const items: User[] | null =
         response.success && response.items
           ? response.items.map((dto) => User.fromDto(dto) as User)

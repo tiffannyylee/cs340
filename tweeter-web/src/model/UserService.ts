@@ -2,7 +2,9 @@ import { User, AuthToken, FakeData } from "tweeter-shared";
 import { Buffer } from "buffer";
 import { ServerFacade } from "../../network/ServerFacade";
 const server = new ServerFacade();
+
 export class UserService {
+
     public async login (
         alias: string,
         password: string

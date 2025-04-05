@@ -1,4 +1,4 @@
 export interface S3Dao {
-    uploadProfileImage(alias: string, imageStream: string) : Promise<void>;
+    putImage(fileName: string, imageStringBase64Encoded: string): Promise<string>
     getProfileImageUrl(alias:string) : Promise<String> //check this idk what it returns
 }

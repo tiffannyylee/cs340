@@ -24,7 +24,14 @@ const UserInfo = (props: Props) => {
   if (!displayedUser) {
     setDisplayedUser(currentUser!);
   }
+  const listener : UserInfoView = {
+    displayErrorMessage: displayErrorMessage,
+    displayInfoMessage: displayInfoMessage,
+    clearLastInfoMessage: clearLastInfoMessage
+  }
 
+  const presenter = props.presenterGenerator(listener)
+  
   useEffect(() => {
     presenter.setIsFollowerStatus(authToken!, currentUser!, displayedUser!, setIsFollower);
     presenter.setNumbFollowees(authToken!, displayedUser!, setFolloweeCount);
@@ -34,13 +41,7 @@ const UserInfo = (props: Props) => {
     // setNumbFollowers(authToken!, displayedUser!);
   }, [displayedUser]);
 
-  const listener : UserInfoView = {
-    displayErrorMessage: displayErrorMessage,
-    displayInfoMessage: displayInfoMessage,
-    clearLastInfoMessage: clearLastInfoMessage
-  }
 
-  const presenter = props.presenterGenerator(listener)
 
 
   const switchToLoggedInUser = (event: React.MouseEvent): void => {

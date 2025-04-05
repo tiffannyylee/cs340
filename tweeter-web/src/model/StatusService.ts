@@ -14,7 +14,7 @@ export class StatusService{
           token : authToken.token,
           userAlias : userAlias,
           pageSize : pageSize,
-          lastItem : lastItem
+          lastItem : lastItem ? lastItem.dto : null
         }
         // return FakeData.instance.getPageOfStatuses(lastItem, pageSize);
         return server.loadFeed(request)
@@ -30,7 +30,7 @@ export class StatusService{
         token : authToken.token,
         userAlias : userAlias,
         pageSize : pageSize,
-        lastItem : lastItem
+        lastItem : lastItem ? lastItem.dto : null
       }
       return server.loadStory(request);
     };
