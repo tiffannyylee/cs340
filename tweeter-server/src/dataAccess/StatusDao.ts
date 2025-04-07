@@ -1,10 +1,13 @@
-import { Status } from "tweeter-shared";
+import { Status, StatusDto } from "tweeter-shared";
+import { RawStatusFromDb } from "./dynamoDB/StatusDynamoDao";
 
 export interface StatusDao {
     // needs to return has more?
-    getFeed(handle: string, time : number) : Promise<Status[]>
-    getStory(handle: string, time: number) : Promise<Status[]>
-    postStatus(status : Status) : Promise<void>;
+    getFeed(handle: string, pageSize: number, lastItem?: StatusDto): Promise<[RawStatusFromDb[], boolean]>    
+    //postStatus(status : StatusDto) : Promise<void>;
+    postStatusToFeed(userHandle: string, status: StatusDto): Promise<void>
+    postStatusToStory(status: StatusDto): Promise<void>
+    getStatus(tableName: string, keyAttr: string, handle: string, pageSize: number, lastItem?: StatusDto): Promise<[RawStatusFromDb[], boolean]> 
     //add to feed and remove from feed?
 
 }

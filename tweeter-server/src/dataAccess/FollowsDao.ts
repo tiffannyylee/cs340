@@ -9,4 +9,5 @@ export interface FollowsDao {
     getFolloweeCount(followerHandle: string): Promise<number>
     getFollowerCount(followeeHandle: string): Promise<number>
     isFollower(user: string, selectedUser: string) : Promise<boolean>
+    getAllFollowers(followeeHandle: string) : Promise<string[]>
 }

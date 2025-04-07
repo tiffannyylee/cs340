@@ -28,6 +28,9 @@ export class UserDynamoDao implements UserDao {
         return [user,password]
     }
     async batchGetUsersByAliases(aliases: string[]): Promise<UserDto[]> {
+        if (aliases.length === 0) {
+            return []; // Don't call DynamoDB if there's nothing to get
+          }
         const keys = aliases.map(alias => ({ user_handle: alias}));
       
         const response = await this.db.send(new BatchGetCommand({

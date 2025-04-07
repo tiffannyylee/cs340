@@ -42,7 +42,7 @@ export class FollowsDynamoDao implements FollowsDao {
             IndexName: "follows_index",
             KeyConditionExpression: "followee_handle = :followee",
             ExpressionAttributeValues: {
-                ":followee": { S: followeeHandle }
+                ":followee": followeeHandle 
             },
             Limit: pageSize,
             ExclusiveStartKey: lastFollowerHandle? { followeeHandle : followeeHandle, follower_handle: lastFollowerHandle} : undefined,
@@ -51,6 +51,19 @@ export class FollowsDynamoDao implements FollowsDao {
         const response = await this.db.send(command);
         const aliases: string[] = response.Items?.map(item => item.followee_handle) ?? [];
         return [aliases, response.LastEvaluatedKey !== undefined]
+    }
+    async getAllFollowers(followeeHandle: string) : Promise<string[]> {
+      const command = new QueryCommand({
+        TableName: this.tableName,
+        IndexName: "follows_index",
+        KeyConditionExpression: "followee_handle = :followee",
+        ExpressionAttributeValues: {
+          ":followee": followeeHandle
+        }
+      });
+      const response = await this.db.send(command);
+      const aliases: string[] = response.Items?.map(item => item.follower_handle) ?? [];
+      return aliases
     }
     async getFolloweeCount(followerHandle: string): Promise<number> {
         const command = new QueryCommand({
@@ -105,8 +118,7 @@ export class FollowsDynamoDao implements FollowsDao {
         //check if user is in the follower list of selected user or if selected user is in the followee list of user
         const command = new QueryCommand({
             TableName : this.tableName,
-            KeyConditionExpression: "follower_handle = :f",
-            FilterExpression: "followee_handle = :e",
+            KeyConditionExpression: "follower_handle = :f AND followee_handle = :e",
             ExpressionAttributeValues: {
               ":f": user,
               ":e": selectedUser
