@@ -3,7 +3,7 @@ import { RawStatusFromDb } from "./dynamoDB/StatusDynamoDao";
 
 export interface StatusDao {
     // needs to return has more?
-    getFeed(handle: string, pageSize: number, lastItem?: StatusDto): Promise<[RawStatusFromDb[], boolean]>    
+    //getFeed(handle: string, pageSize: number, lastItem?: StatusDto): Promise<[RawStatusFromDb[], boolean]>    
     //postStatus(status : StatusDto) : Promise<void>;
     postStatusToFeed(userHandle: string, status: StatusDto): Promise<void>
     postStatusToStory(status: StatusDto): Promise<void>

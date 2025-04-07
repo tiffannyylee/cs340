@@ -49,7 +49,7 @@ export class FollowsDynamoDao implements FollowsDao {
         });
     
         const response = await this.db.send(command);
-        const aliases: string[] = response.Items?.map(item => item.followee_handle) ?? [];
+        const aliases: string[] = response.Items?.map(item => item.follower_handle) ?? [];
         return [aliases, response.LastEvaluatedKey !== undefined]
     }
     async getAllFollowers(followeeHandle: string) : Promise<string[]> {

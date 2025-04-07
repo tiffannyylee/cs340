@@ -49,7 +49,8 @@ export class UserDynamoDao implements UserDao {
         const params = {
             TableName: this.usersTableName,
             Item : {
-            user_handle: `@${user.alias}`, 
+            // user_handle: `@${user.alias}`, 
+            user_handle: user.alias,
             first_name: user.firstName, 
             last_name: user.lastName, 
             image_url: user.imageUrl, 
@@ -57,9 +58,7 @@ export class UserDynamoDao implements UserDao {
         }
         await this.db.send(new PutCommand(params))
     }
-    updateUser(user: User): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
+
     async createAuth(handle: string, token:string): Promise<void> {
         const params = {
             TableName: this.authTableName,
@@ -71,9 +70,7 @@ export class UserDynamoDao implements UserDao {
         };
         await this.db.send(new PutCommand(params));
     }
-    deleteAuth(token: string): Promise<void> {
-        throw new Error("Method not implemented.");
-    }
+
     async getAuth(token: string): Promise<[AuthTokenDto, string]|null> {
         const params = {
             TableName : this.authTableName,
@@ -82,6 +79,15 @@ export class UserDynamoDao implements UserDao {
         const result = await this.db.send(new GetCommand(params))
         if (!result.Item){
             return null
+        }
+
+        const createdAt = result.Item.created_at;
+        const now = Date.now();
+        const age = now - createdAt;
+
+        const EXPIRATION_TIME_MS = 24 * 60 * 60 * 1000;
+        if (age > EXPIRATION_TIME_MS) {
+            return null;
         }
         const authToken = {token: result.Item.token, timestamp: result.Item.created_at};
         const alias = result.Item.user_handle;

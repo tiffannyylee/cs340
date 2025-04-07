@@ -13,29 +13,30 @@ export class UserService {
         this.s3Dao = daoFactory.createS3Dao();
         this.userDao = daoFactory.createUserDao();
     }
+    public normalizeAlias(alias: string): string {
+        return alias.startsWith("@") ? alias : `@${alias}`;
+      }
     public async login (
         alias: string,
         password: string
         ): Promise<[UserDto, AuthTokenDto]> {
-        // TODO: Replace with the result of calling the server
-        // const user = FakeData.instance.firstUser; 
+        alias = this.normalizeAlias(alias) 
         const { hashedPassword, user } = await this.getAliasAndPassword(alias);
         const isPasswordValid = await bcryptjs.compare(password, hashedPassword);
         if (!isPasswordValid){
-            throw new Error("Bad Request: this password is not valid")
+            throw new Error("[Bad Request]: this password is not valid")
         }
         if (user === null) {
-            throw new Error("Invalid alias or password");
+            throw new Error("[Bad Request}: Invalid alias or password");
         }
-        //const userDto = user.dto
         const token = this.generateAuthToken()
         await this.userDao.createAuth(user.alias,token);
         const authToken = await this.getAuthFromQuery(token);
-        //return a dto to send back to client
         return [user, authToken];
         };
         
     private async getAliasAndPassword(alias: string) {
+        alias = this.normalizeAlias(alias)
         const userRecord = await this.userDao.getUser(alias);
         console.log(userRecord);
         if (userRecord == null) {
@@ -64,12 +65,12 @@ export class UserService {
         userImageBytes: string, //Uint8Array,
         imageFileExtension: string
         ): Promise<[UserDto, AuthTokenDto]> {
-        // Not neded now, but will be needed when you make the request to the server in milestone 3
-        const imageStringBase64: string = Buffer.from(userImageBytes).toString("base64");
+
+        alias = this.normalizeAlias(alias)
         const fileName = `${alias}-profile-pic`;
 
         // Upload to S3
-        const imageUrl = await this.s3Dao.putImage(fileName, imageStringBase64);
+        const imageUrl = await this.s3Dao.putImage(fileName, userImageBytes);
         //hash password to store in db
         const salt = await bcryptjs.genSalt(10);
         const hashedPass = await bcryptjs.hash(password,salt)
@@ -92,14 +93,11 @@ export class UserService {
         if (!authInfo) {
             throw new Error("Auth token not found after multiple attempts");
         }
-        //const authInfo = await this.userDao.getAuth(token)
-        // const user = FakeData.instance.firstUser;
     
         if (user === null) {
             throw new Error("Invalid registration");
         }
         const userDto = user.dto
-        // const authDto = (FakeData.instance.authToken).dto
         if (authInfo==null){
             throw new Error("auth is null")
         }
@@ -107,15 +105,17 @@ export class UserService {
         const handle = authInfo[1]
         return [userDto, authToken];
         };
+
     private generateAuthToken(): string {
             return Math.random().toString(36).substring(2); // Simple token generation
         }
+
     public async getUser (
         authToken: string,
         alias: string
         ): Promise<UserDto | null> {
-        // TODO: Replace with the result of calling server
-        // const user = FakeData.instance.findUserByAlias(alias);
+
+        alias = this.normalizeAlias(alias)
         const userInfo = await this.userDao.getUser(alias);
         if (userInfo == null) {
             return null
@@ -125,7 +125,6 @@ export class UserService {
         };
 
     public async logout (authToken: string): Promise<void> {
-        // Pause so we can see the logging out message. Delete when the call to the server is implemented.
         await new Promise((res) => setTimeout(res, 1000));
         };
 }

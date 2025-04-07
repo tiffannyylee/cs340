@@ -15,33 +15,7 @@ export class StatusDynamoDao implements StatusDao {
     private db = DynamoDBDocumentClient.from(this.dbClient);
     private storyTableName = "story"
     private feedTableName = "feed"
-    async getFeed(handle: string, pageSize: number, lastItem?: StatusDto): Promise<[RawStatusFromDb[], boolean]> {
-        //for the current user, query the feed table by their handle
-        //sort the entries by time
-        const command = new QueryCommand({
-            TableName: this.feedTableName,
-            KeyConditionExpression: "user_handle = :h",
-            ExpressionAttributeValues: {
-                ":h": handle,
-            },
-            Limit: pageSize,
-            ScanIndexForward: false,
-            ExclusiveStartKey: lastItem
-            ? {
-                user_handle: handle,
-                timestamp: lastItem.timestamp
-              }
-            : undefined
-        })
-        const response = await this.db.send(command)
-        const statuses: RawStatusFromDb[] = (response.Items ?? []).map(item => ({
-            author_handle: item.author_handle, // or fetch full user info if needed
-            post: item.post,
-            timestamp: item.timestamp,
-        }));
-    
-        return [statuses, !!response.LastEvaluatedKey];
-    }
+ 
     async getStatus(tableName: string, keyAttr: string, handle: string, pageSize: number, lastItem?: StatusDto): Promise<[RawStatusFromDb[], boolean]> {
         //for the current user, query the feed table by their handle
         //sort the entries by time

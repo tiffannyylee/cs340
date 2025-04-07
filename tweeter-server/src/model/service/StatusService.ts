@@ -17,25 +17,29 @@ export class StatusService{
     this.s3Dao = daoFactory.createS3Dao();
     this.statusDao = daoFactory.createStatusDao();
   }
-    private async loadMoreStatusItems ( tableName: "feed"|"story", keyName:string, userAlias: string,
-      pageSize: number,
-      lastItem: StatusDto | null): Promise<[StatusDto[], boolean]> {
-        const [rawStatuses, hasMore] = await this.statusDao.getStatus(tableName, keyName, userAlias, pageSize, lastItem ?? undefined);
+  public normalizeAlias(alias: string): string {
+    return alias.startsWith("@") ? alias : `@${alias}`;
+  }
+  private async loadMoreStatusItems ( tableName: "feed"|"story", keyName:string, userAlias: string,
+    pageSize: number,
+    lastItem: StatusDto | null): Promise<[StatusDto[], boolean]> {
+      userAlias = this.normalizeAlias(userAlias)
+      const [rawStatuses, hasMore] = await this.statusDao.getStatus(tableName, keyName, userAlias, pageSize, lastItem ?? undefined);
 
-        const aliases = [...new Set(rawStatuses.map((s) => s.author_handle))];
-        const users = await this.userDao.batchGetUsersByAliases(aliases);
-        const userMap = new Map<string, UserDto>(users.map((u): [string, UserDto] => [u.alias, u]));
-        const statuses: StatusDto[] = rawStatuses.map((s) => {
-          return {post : s.post,
-          user : userMap.get(s.author_handle)!,
-          timestamp : s.timestamp
-        } as StatusDto
-      });
-        if (statuses.length == 0) {
-          return [[],hasMore]
-        }
-        return [statuses, hasMore]  
+      const aliases = [...new Set(rawStatuses.map((s) => s.author_handle))];
+      const users = await this.userDao.batchGetUsersByAliases(aliases);
+      const userMap = new Map<string, UserDto>(users.map((u): [string, UserDto] => [u.alias, u]));
+      const statuses: StatusDto[] = rawStatuses.map((s) => {
+        return {post : s.post,
+        user : userMap.get(s.author_handle)!,
+        timestamp : s.timestamp
+      } as StatusDto
+    });
+      if (statuses.length == 0) {
+        return [[],hasMore]
       }
+      return [statuses, hasMore]  
+    }
 
     public async loadMoreFeedItems  (
         authToken: string,
@@ -43,38 +47,23 @@ export class StatusService{
         pageSize: number,
         lastItem: StatusDto | null
       ): Promise<[StatusDto[], boolean]>  {
-        // TODO: Replace with the result of calling server
-        const [rawStatuses, hasMore] = await this.statusDao.getStatus("feed", "user_handle", userAlias, pageSize, lastItem ?? undefined);
-
-        const aliases = [...new Set(rawStatuses.map((s) => s.author_handle))];
-        const users = await this.userDao.batchGetUsersByAliases(aliases);
-        const userMap = new Map<string, UserDto>(users.map((u): [string, UserDto] => [u.alias, u]));
-        const statuses: StatusDto[] = rawStatuses.map((s) => {
-          return {post : s.post,
-          user : userMap.get(s.author_handle)!,
-          timestamp : s.timestamp
-        } as StatusDto
-      });
-        if (statuses.length == 0) {
-          return [[],hasMore]
-        }
-        return [statuses, hasMore]      
+        userAlias = this.normalizeAlias(userAlias)
+        return await this.loadMoreStatusItems("feed", "user_handle", userAlias, pageSize, lastItem)      
       };
+
     public async loadMoreStoryItems(
       authToken: string,
       userAlias: string,
       pageSize: number,
       lastItem: StatusDto | null
     ): Promise<[StatusDto[], boolean]> {
-      // TODO: Replace with the result of calling server
-      // const [newItems, hasMore] = FakeData.instance.getPageOfStatuses(Status.fromDto(lastItem), pageSize);
-      // const dtos = newItems.map((status:Status)=>status.dto)
-      // return [dtos, hasMore]
+      userAlias = this.normalizeAlias(userAlias)
       return await this.loadMoreStatusItems("story", "author_handle", userAlias, pageSize, lastItem)
 
     };
 
     public async getFeedOrStory(type: "feed" | "status", authToken: string, userAlias: string, pageSize:number, lastItem:StatusDto|null) {
+      userAlias = this.normalizeAlias(userAlias)
       if (type == "feed"){
         return await this.loadMoreFeedItems(authToken,userAlias,pageSize,lastItem)
       } else {
@@ -86,12 +75,6 @@ export class StatusService{
       token: string,
       newStatus: StatusDto
     ): Promise<void> {
-      // Pause so we can see the logging out message. Remove when connected to the server
-      //await new Promise((f) => setTimeout(f, 2000));
-      // TODO: Call the server to post the status
-      //send as dto
-      //add to story table for user
-      //go to feed
       const {authToken, handle} = await this.getAuthFromQuery(token)
       await this.statusDao.postStatusToStory(newStatus)
       //this gets all followers of the user whos token was passed in
