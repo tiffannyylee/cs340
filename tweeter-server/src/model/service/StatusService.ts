@@ -84,7 +84,11 @@ export class StatusService{
     };
 
     public async postStatusToFeed(followers: string[], newStatus: StatusDto){
-      await this.statusDao.batchAddStatusToFeed(followers, newStatus)
+      const batchSize = 25;
+      for (let i = 0; i < followers.length; i += batchSize) {
+          const batch = followers.slice(i, i + batchSize);
+          await this.statusDao.batchAddStatusToFeed(batch, newStatus);
+      }
     }
 
     private async getAuthFromQuery(token: string) {

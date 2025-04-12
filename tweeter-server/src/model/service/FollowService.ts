@@ -29,6 +29,16 @@ export class FollowService{
     const followers = await this.followDao.getAllFollowers(alias)
     return followers
   }
+  public async loadRawAliasesOfFollowers(
+    token: string,
+    userAlias: string,
+    pageSize: number,
+    lastItem: string | null // just alias now
+ ): Promise<[string[], boolean]> {
+    userAlias = this.normalizeAlias(userAlias)
+    const lastHandle = lastItem;
+    return await this.followDao.getFollowers(userAlias, pageSize, lastHandle);
+ }
 
   private async loadUsersByFollowType(
     type: "followers" | "followees",

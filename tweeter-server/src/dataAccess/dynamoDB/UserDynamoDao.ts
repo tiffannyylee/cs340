@@ -28,22 +28,52 @@ export class UserDynamoDao implements UserDao {
         return [user,password]
     }
     async batchGetUsersByAliases(aliases: string[]): Promise<UserDto[]> {
+    //     if (aliases.length === 0) {
+    //         return []; // Don't call DynamoDB if there's nothing to get
+    //       }
+    //     const keys = aliases.map(alias => ({ user_handle: alias}));
+      
+    //     const response = await this.db.send(new BatchGetCommand({
+    //       RequestItems: {
+    //         "users": {
+    //           Keys: keys
+    //         }
+    //       }
+    //     }));
+      
+    //     const items = response.Responses?.["users"] ?? [];
+    //     return items.map((item)=>({firstName: item.first_name, lastName: item.last_name, alias: item.user_handle, imageUrl: item.image_url}) as UserDto)
+    //   
         if (aliases.length === 0) {
-            return []; // Don't call DynamoDB if there's nothing to get
-          }
-        const keys = aliases.map(alias => ({ user_handle: alias}));
-      
-        const response = await this.db.send(new BatchGetCommand({
-          RequestItems: {
-            "users": {
-              Keys: keys
-            }
-          }
-        }));
-      
-        const items = response.Responses?.["users"] ?? [];
-        return items.map((item)=>({firstName: item.first_name, lastName: item.last_name, alias: item.user_handle, imageUrl: item.image_url}) as UserDto)
-      }
+            return [];
+        }
+
+        const results: UserDto[] = [];
+        const batchSize = 100;  // AWS hard limit
+
+        for (let i = 0; i < aliases.length; i += batchSize) {
+            const batch = aliases.slice(i, i + batchSize);
+
+            const response = await this.db.send(new BatchGetCommand({
+                RequestItems: {
+                    [this.usersTableName]: {
+                        Keys: batch.map(alias => ({ user_handle: alias }))
+                    }
+                }
+            }));
+
+            const items = response.Responses?.[this.usersTableName] ?? [];
+
+            results.push(...items.map((item) => ({
+                firstName: item.first_name,
+                lastName: item.last_name,
+                alias: item.user_handle,
+                imageUrl: item.image_url
+            } as UserDto)));
+        }
+
+        return results;
+    }
     async createUser(user: User, password:string): Promise<void> {
         //do a putitem command that puts a user item in the table
         const params = {

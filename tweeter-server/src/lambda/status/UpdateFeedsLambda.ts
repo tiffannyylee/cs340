@@ -18,7 +18,7 @@ export const handler = async function (event:any ) {
         const status = body.status
         //i think i need to write a new batch write to feed function
         await statusService.postStatusToFeed(followers, status)
-        await delay(1000);
+        await delay(10);
       }
       return null;
 }
