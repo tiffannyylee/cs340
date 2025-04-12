@@ -45,7 +45,7 @@ export class FollowsDynamoDao implements FollowsDao {
                 ":followee": followeeHandle 
             },
             Limit: pageSize,
-            ExclusiveStartKey: lastFollowerHandle? { followeeHandle : followeeHandle, follower_handle: lastFollowerHandle} : undefined,
+            ExclusiveStartKey: lastFollowerHandle? { followee_handle : followeeHandle, follower_handle: lastFollowerHandle} : undefined,
         });
     
         const response = await this.db.send(command);

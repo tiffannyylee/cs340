@@ -78,10 +78,14 @@ export class StatusService{
       const {authToken, handle} = await this.getAuthFromQuery(token)
       await this.statusDao.postStatusToStory(newStatus)
       //this gets all followers of the user whos token was passed in
-      const followers = await this.followDao.getAllFollowers(handle)
-      console.log(`Followers of ${handle}:`, followers);
-      await Promise.all(followers.map((follower)=>this.statusDao.postStatusToFeed(follower, newStatus)))
+      // const followers = await this.followDao.getAllFollowers(handle)
+      // console.log(`Followers of ${handle}:`, followers);
+      // await Promise.all(followers.map((follower)=>this.statusDao.postStatusToFeed(follower, newStatus)))
     };
+
+    public async postStatusToFeed(followers: string[], newStatus: StatusDto){
+      await this.statusDao.batchAddStatusToFeed(followers, newStatus)
+    }
 
     private async getAuthFromQuery(token: string) {
       const authInfo = await this.userDao.getAuth(token);

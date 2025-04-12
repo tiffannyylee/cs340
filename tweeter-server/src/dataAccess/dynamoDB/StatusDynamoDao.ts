@@ -1,6 +1,6 @@
 import { Status, StatusDto } from "tweeter-shared";
 import { StatusDao } from "../StatusDao";
-import { DynamoDBDocumentClient, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
+import { BatchWriteCommand, DynamoDBDocumentClient, PutCommand, QueryCommand } from "@aws-sdk/lib-dynamodb";
 import { DynamoDBClient } from "@aws-sdk/client-dynamodb";
 
 export interface RawStatusFromDb {
@@ -72,6 +72,33 @@ export class StatusDynamoDao implements StatusDao {
         } catch (error) {
             console.error(`Failed to post to ${userHandle}'s feed`, error);
             throw error; // Re-throw to catch in calling code
+        }
+    }
+    async batchAddStatusToFeed(followers: string[], status: StatusDto) {
+        const putRequests = followers.map(follower => ({
+            PutRequest: {
+                Item: {
+                    user_handle: follower,
+                    timestamp: status.timestamp,  // use timestamp as sort key
+                    author_handle: status.user.alias, 
+                    post: status.post,
+                }
+            }
+        }));
+    
+        const params = {
+            RequestItems: {
+                [this.feedTableName]: putRequests
+            }
+        };
+    
+        let response = await this.db.send(new BatchWriteCommand(params));
+
+        while (response.UnprocessedItems && Object.keys(response.UnprocessedItems).length > 0) {
+          console.log("Retrying unprocessed items...");
+          response = await this.db.send(new BatchWriteCommand({
+            RequestItems: response.UnprocessedItems
+          }));
         }
     }
 }

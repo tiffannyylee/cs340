@@ -25,6 +25,10 @@ export class FollowService{
       const handle = authInfo[1];
       return {authToken,handle};
   }
+  public async getFollowersOfUser(alias:string) : Promise<string[]> {
+    const followers = await this.followDao.getAllFollowers(alias)
+    return followers
+  }
 
   private async loadUsersByFollowType(
     type: "followers" | "followees",

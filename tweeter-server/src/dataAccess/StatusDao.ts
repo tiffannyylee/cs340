@@ -8,6 +8,6 @@ export interface StatusDao {
     postStatusToFeed(userHandle: string, status: StatusDto): Promise<void>
     postStatusToStory(status: StatusDto): Promise<void>
     getStatus(tableName: string, keyAttr: string, handle: string, pageSize: number, lastItem?: StatusDto): Promise<[RawStatusFromDb[], boolean]> 
+    batchAddStatusToFeed(followers: string[], status: StatusDto): Promise<void>
     //add to feed and remove from feed?
-
 }
